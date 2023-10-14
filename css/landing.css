@@ -1,0 +1,82 @@
+h1 {
+    font-family: 'Geologica', sans-serif;
+    font-weight: bold;
+    font-size: 3em;
+    /* Additional styles for the title go here */
+  }
+
+  .centered-text {
+    font-family: 'Geologica', sans-serif;
+    font-weight: bold;
+    font-size: 2em;
+    text-align: right;
+    position: absolute;
+    top: 30%;
+    right: 25%;
+    transform: translate(0%, 0%);
+}  
+
+.time-div {
+    font-family: 'Geologica', sans-serif;
+    font-weight: bold;
+    font-size: 2em;
+    text-align: right;
+    position: absolute;
+    top: 35%;
+    right: 25%;
+    transform: translate(0%, 0%);
+}
+
+.divider {
+    border: 1px solid #ccc; /* Adjust the color and thickness as needed */
+    margin: 20px 0; /* Adjust the margin as needed */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.catchphrase {
+    font-family: 'Geologica', sans-serif;
+    font-weight: bold;
+    font-size: 2em;
+    text-align: right;
+    position: absolute;
+    top: 2%;
+    right: 2%;
+    color: #78909C;
+    transform: translate(0%, 0%);
+}
+
+path {
+    fill: #CCCCCC; /* Default color */
+    transition: fill 0.3s; /* Smooth transition for color change */
+  }
+
+  path:hover {
+    fill: #FF0000; /* Change to your desired hover color */
+  }
+
+  .tooltip {
+    position: absolute;
+    background-color: #333;
+    color: #FFF;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 12px;
+    pointer-events: none; /* Ensure the tooltip does not interfere with mouse events on the map */
+  }
+
+  .map-container {
+    width: 25%;
+    height: 75vh;
+    position: absolute;
+    left: 25%; /* Adjust the left value based on your needs */
+    top: 25%;  /* Adjust the top value based on your needs */
+}
+
+.map-container:hover object path {
+    fill: #ff0000; /* Change the fill color on hover */
+    stroke: #0000ff; /* Change the stroke color on hover */
+}
+object {
+    width: 100%;
+    height: 100%;
+}
