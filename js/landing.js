@@ -34,18 +34,61 @@ document.addEventListener('DOMContentLoaded', function() {
         timeElement.textContent = 'Current time: ' + hours + ':' + minutes + ':' + seconds;
     }, 1000);
 
-    function hoverMap() {
-        document.getElementById('indiaMap').classList.add('hover');
-    }
-
     // Function to remove hover class
-    function unhoverMap() {
-        document.getElementById('indiaMap').classList.remove('hover');
-    }
+    var objectElement = document.getElementById('indiaMap');
+    objectElement.addEventListener('load', function () {
+        // Get the SVG document within the object
+        var svgDoc = objectElement.contentDocument;
+        // Get all paths in the SVG
+        var paths = svgDoc.querySelectorAll('path');
 
-    // Attach hover events to the map container
-    var mapContainer = document.querySelector('.map-container');
+        // Add a click event listener to each path
+        // paths.forEach(function (path) {
+        //     path.addEventListener('mousedown', function () {
+        //         // Toggle the selection by changing the stroke color
+        //         if (path.getAttribute('fill') === 'black') {
+        //             // Change to a selected fill color
+        //             path.setAttribute('fill', 'red');
+        //         } else {
+        //             // Change back to the original fill color
+        //             path.setAttribute('fill', 'black');
+        //         }
+        //     });
+        // });
 
-    mapContainer.addEventListener('mouseover', hoverMap);
-    mapContainer.addEventListener('mouseout', unhoverMap);
+        paths.forEach(function (path) {
+            path.addEventListener('mouseenter', function () {
+                // Change color on hover
+                path.setAttribute('fill', 'red');
+            });
+
+            path.addEventListener('mouseleave', function () {
+                // Change back to the original color on mouse leave
+                path.setAttribute('fill', 'black');
+            });
+
+            path.addEventListener('click', function () {
+                // Open a new page when a path is clicked
+                localStorage.setItem('selectedPathIndex', path.getAttribute('d'));
+                window.location.href = 'pages/state.html'; // Replace 'new_page.html' with your desired URL
+            });
+        });
+    });
+    
 });
+
+// Function to redirect to a new page based on the path ID
+
+var paths = document.querySelectorAll('#my-svg path');
+
+    // Add a click event listener to each path
+    paths.forEach(function (path) {
+      path.addEventListener('click', function () {
+        // Toggle the selection by changing the stroke color
+        if (path.getAttribute('stroke') === 'black') {
+          path.setAttribute('stroke', 'red'); // Change to a selected color
+        } else {
+          path.setAttribute('stroke', 'black'); // Change back to the original color
+        }
+      });
+    });
