@@ -72,6 +72,15 @@ path {
     top: 25%;  /* Adjust the top value based on your needs */
 }
 
+.dark-mode-toggle {
+  font-family: 'Geologica', sans-serif;
+  position: absolute;
+  font-size: x-large;
+  color: #78909C;
+  left: 65%;
+  top: 5%
+}
+
 .map-container:hover object path {
     fill: #ff0000; /* Change the fill color on hover */
     stroke: #0000ff; /* Change the stroke color on hover */
@@ -93,4 +102,49 @@ path:hover {
 .map-container:hover path {
   fill: red;
   transform: scale(1.1); /* Increase the scale for a pop-out effect */
+}
+
+.dark-mode {
+  background-color: #121212; /* Dark mode background color */
+  color: #ffffff; /* Dark mode text color */
+}
+
+/* Adjust SVG color for dark mode */
+.dark-mode path {
+  fill: #ffffff; /* White fill for SVG in dark mode */
+}
+
+.dark-mode-toggle {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.toggle-container {
+  width: 50px;
+  height: 24px;
+  background-color: #dddddd; /* Background color of the toggle switch */
+  border-radius: 12px; /* Round corners to make it look like a switch */
+  position: relative;
+  margin-right: 10px; /* Adjust as needed */
+}
+
+.toggle-ball {
+  width: 20px;
+  height: 20px;
+  background-color: #ffffff; /* Color of the toggle ball */
+  border-radius: 50%; /* Round ball to make it look like a switch */
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s ease-in-out; /* Add smooth transition */
+}
+
+.dark-mode .toggle-ball {
+  transform: translateX(26px); /* Move the ball to the right for dark mode */
+}
+
+.dark-mode .toggle-container {
+  background-color: #800080; /* Change toggle switch color in dark mode */
 }

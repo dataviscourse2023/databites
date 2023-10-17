@@ -74,6 +74,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    const isDarkMode = localStorage.getItem('darkMode') === 'true';
+    
+    if (isDarkMode) {
+        document.body.classList.add('dark-mode');
+    }
     
 });
 
@@ -92,3 +98,27 @@ var paths = document.querySelectorAll('#my-svg path');
         }
       });
     });
+
+    function toggleDarkMode() {
+        const body = document.body;
+    
+        // Toggle the 'dark-mode' class on the body
+        body.classList.toggle('dark-mode');
+    
+        // Save the user's preference in localStorage
+        const isDarkMode = body.classList.contains('dark-mode');
+        localStorage.setItem('darkMode', isDarkMode);
+        if (isDarkMode) {
+            toggleSvgColor('#ffffff');
+        }
+        else {
+            toggleSvgColor('#000000');
+        }
+    }
+
+    function toggleSvgColor(color) {
+        const svg = document.getElementById('indiaMap');
+        svg.contentDocument.querySelectorAll('path').forEach(path => {
+            path.style.fill = color;
+        });
+    }
