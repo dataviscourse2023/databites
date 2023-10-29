@@ -4,11 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Bites | States</title>
-    <script src="js/state.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Geologica:wght@700&display=swap');
+      </style>
+    <link rel="stylesheet" href="../css/state.css">
+    <script defer src="../js/state.js" type="module"></script>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-    <div class="selected-state-map">
-        <script src="js/selectedSvg.js"></script>
+    <h1>Data Bites.</h1>
+    <h3 class="catchphrase">Huge amounts of data, now bite sized.</h3>
+    <hr class="divider">
+    <div class="time-div" id="time">
+
     </div>
+    <div class="map-container">
+        <object type="image/svg+xml" data="images/india.svg" id="indiaMap" width="100%" height="100%"></object>
+    </div>
+
+    <div class="dark-mode-toggle" onclick="toggleDarkMode()">
+        <div class="toggle-container">
+            <div class="toggle-ball"></div>
+        </div>
+        Dark Mode
+    </div>
+    <div class="dropdown">
+        <button id="viz">Visualize</button>
+        <div class="dropdown-content" id="dropdownButton">
+            <a href="#">Pie Chart</a>
+            <a href="#">Bar Chart</a>
+            <a href="#">Scatterplot</a>
+        </div>
+    </div>
+
+    <div class="dropdown2">
+        <button>Filter</button>
+        <div class="dropdown-content2" id="dropdownButton">
+            <a href="#">Cuisine</a>
+            <a href="#">Rating</a>
+            <a href="#">Scatterplot</a>
+        </div>
+    </div>
+    <div id="chart-container"></div>
 </body>
 </html>
