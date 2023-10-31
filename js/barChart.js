@@ -1,10 +1,20 @@
-const svgWidth = 1200;
-const svgHeight = 800;
+let svgWidth, svgHeight;
 const margin = { top: 20, right: 20, bottom: 150, left: 150 };
 
 let svg, g, x, y, width, height;
 
-document.addEventListener("dataLoaded", function () {
+const clearChart = () => {
+  d3.select("#barchart").selectAll("*").remove();
+  d3.select(".legends").selectAll("*").remove();
+  const cuisineDropdown = document.getElementById("cuisineDropdown");
+  cuisineDropdown.innerHTML = "";
+};
+
+const createChart = () => {
+  clearChart();
+  svgWidth = window.innerWidth * 0.6;
+  svgHeight = window.innerHeight * 0.6;
+
   console.log("Barchart loaded");
 
   const cuisineDropdown = document.getElementById("cuisineDropdown");
@@ -47,7 +57,7 @@ document.addEventListener("dataLoaded", function () {
     else if (selectedValue === "None") renderTotalBarChart(countArray);
     else renderSelectedBarChart(countArray, selectedValue);
   });
-});
+};
 
 const GetRestaurantsCount = () => {
   const countData = {};
@@ -129,6 +139,10 @@ const initializeBarChart = (data) => {
 };
 
 const renderTotalBarChart = (data) => {
+  d3.select(".legends").selectAll("*").remove();
+
+  const barColor = "#007AFF";
+
   y = d3
     .scaleLinear()
     .range([height, 0])
@@ -147,7 +161,16 @@ const renderTotalBarChart = (data) => {
     .attr("x", (d) => x(d.state))
     .attr("y", (d) => y(d.totalCuisines))
     .attr("width", x.bandwidth())
-    .attr("height", (d) => height - y(d.totalCuisines));
+    .attr("height", (d) => height - y(d.totalCuisines))
+    .attr("fill", barColor)
+    .on("mouseover", function () {
+      d3.select(this).attr("stroke", "#000").attr("stroke-width", 3);
+    })
+    .on("mouseout", function () {
+      d3.select(this).attr("stroke", "none");
+    })
+    .append("title")
+    .text((d) => `Total Restaurants: ${d.totalCuisines}`);
 };
 
 const renderSelectedBarChart = (data, selectedCuisine) => {
@@ -157,6 +180,13 @@ const renderSelectedBarChart = (data, selectedCuisine) => {
     }
     return d;
   });
+
+  const colorScale = d3
+    .scaleOrdinal()
+    .domain(selectedCuisine)
+    .range(d3.schemeCategory10);
+
+  d3.select(".legends").selectAll("*").remove();
 
   y = d3
     .scaleLinear()
@@ -176,7 +206,19 @@ const renderSelectedBarChart = (data, selectedCuisine) => {
     .attr("x", (d) => x(d.state))
     .attr("y", (d) => y(d.cuisines[selectedCuisine]))
     .attr("width", x.bandwidth())
-    .attr("height", (d) => height - y(d.cuisines[selectedCuisine]));
+    .attr("height", (d) => height - y(d.cuisines[selectedCuisine]))
+    .attr("fill", colorScale(selectedCuisine))
+    .on("mouseover", function () {
+      d3.select(this).attr("stroke", "#000").attr("stroke-width", 3);
+    })
+    .on("mouseout", function () {
+      d3.select(this).attr("stroke", "none");
+    })
+    .append("title")
+    .text(
+      (d) =>
+        `Cuisine: ${selectedCuisine}\n Total Restaurants: ${d.cuisines[selectedCuisine]}`
+    );
 };
 
 const renderStackedBarChart = (data) => {
@@ -207,6 +249,8 @@ const renderStackedBarChart = (data) => {
     .scaleOrdinal()
     .domain(cuisineNames)
     .range(d3.schemeCategory10);
+
+  d3.select(".legends").selectAll("*").remove();
 
   cuisineNames.forEach((cuisine) => {
     const legendItem = d3.select(".legends").append("div");
@@ -250,5 +294,16 @@ const renderStackedBarChart = (data) => {
     .attr("y", (d) => y(d.y1))
     .attr("height", (d) => y(d.y0) - y(d.y1))
     .attr("width", x.bandwidth())
-    .attr("fill", (d) => colorScale(d.name));
+    .attr("fill", (d) => colorScale(d.name))
+    .on("mouseover", function () {
+      d3.select(this).attr("stroke", "#000").attr("stroke-width", 3);
+    })
+    .on("mouseout", function () {
+      d3.select(this).attr("stroke", "none");
+    })
+    .append("title")
+    .text((d) => `Cuisine: ${d.name}\n Total Restaurants: ${d.count}`);
 };
+
+window.addEventListener("resize", createChart);
+document.addEventListener("dataLoaded", createChart);
