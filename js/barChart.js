@@ -201,6 +201,28 @@ const renderStackedBarChart = (data) => {
 
   console.log(stackdata);
 
+  const cuisineNames = stackdata[0].cuisines.map((cuisine) => cuisine.name);
+
+  const colorScale = d3
+    .scaleOrdinal()
+    .domain(cuisineNames)
+    .range(d3.schemeCategory10);
+
+  cuisineNames.forEach((cuisine) => {
+    const legendItem = d3.select(".legends").append("div");
+
+    legendItem.style("display", "flex").style("align-items", "center");
+    legendItem
+      .append("div")
+      .style("background-color", colorScale(cuisine))
+      .attr("class", "legend-color")
+      .style("width", "20px")
+      .style("height", "20px")
+      .style("margin-right", "5px");
+
+    legendItem.append("span").text(cuisine);
+  });
+
   y = d3
     .scaleLinear()
     .domain([0, d3.max(stackdata, (d) => d3.max(d.cuisines, (c) => c.y1))])
@@ -218,8 +240,6 @@ const renderStackedBarChart = (data) => {
     .append("g")
     .attr("class", "bar")
     .attr("transform", (d) => `translate(${x(d.state)},0)`);
-
-  const colorScale = d3.scaleOrdinal().range(d3.schemeCategory10);
 
   bars
     .selectAll("rect")
