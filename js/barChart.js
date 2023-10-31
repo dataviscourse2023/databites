@@ -3,15 +3,7 @@ const margin = { top: 20, right: 20, bottom: 150, left: 150 };
 
 let svg, g, x, y, width, height;
 
-const clearChart = () => {
-  d3.select("#barchart").selectAll("*").remove();
-  d3.select(".legends").selectAll("*").remove();
-  const cuisineDropdown = document.getElementById("cuisineDropdown");
-  cuisineDropdown.innerHTML = "";
-};
-
 const createChart = () => {
-  clearChart();
   svgWidth = window.innerWidth * 0.6;
   svgHeight = window.innerHeight * 0.6;
 
@@ -305,5 +297,4 @@ const renderStackedBarChart = (data) => {
     .text((d) => `Cuisine: ${d.name}\n Total Restaurants: ${d.count}`);
 };
 
-window.addEventListener("resize", createChart);
 document.addEventListener("dataLoaded", createChart);
