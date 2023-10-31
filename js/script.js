@@ -1,46 +1,52 @@
-// main.js
-
-let data = [];
-
-function LoadData() {
-  const dataFile = "swiggy";
-
-  return d3.csv(`../data/${dataFile}.csv`)
-    .then((dataOutput) => {
-      data = dataOutput.map((d) => ({
-        id: d.id,
-        name: d.name,
-        city: d.city,
-        rating: d.rating,
-        rating_count: d.rating_count,
-        cost: d.cost,
-        cuisine: d.cuisine,
-        lic_no: d.lic_no,
-        link: d.link,
-        address: d.address,
-        menu: d.menu,
-      }));
-
-      console.log(data);
-
-      return data;  // Return the data to the caller
-    })
-    .catch((e) => {
-      console.log(e);
-      alert("Error!");
-    });
+async function loadData() {
+  const swiggyData = await d3.csv("./data/swiggy.csv");
+  return { swiggyData };
 }
 
-const globalState = {
-  data: []
+const globalApplicationState = {
+  cities: [],
+  states: [],
+  cuisines: [],
+  selectedStates: [],
+  swiggyData: null,
 };
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Call LoadData and wait for the promise to resolve
-  LoadData().then((data) => {
-    globalState.data = data;
-    // Now, globalState.data is populated with the data from LoadData
-  });
-});
+function getUniqueValuesByKey(key) {
+  const uniqueValues = [];
+  const valueSet = new Set();
 
-export { globalState };  // Export globalState at the top level of the module
+  for (const obj of globalApplicationState.swiggyData) {
+    const value = obj[key];
+    if (!valueSet.has(value)) {
+      valueSet.add(value);
+      uniqueValues.push(value);
+    }
+  }
+
+  return uniqueValues;
+}
+
+loadData().then((loadedData) => {
+  globalApplicationState.swiggyData = loadedData.swiggyData;
+  globalApplicationState.cities = getUniqueValuesByKey("city");
+  globalApplicationState.cuisines = getUniqueValuesByKey("cuisine").sort();
+  globalApplicationState.states = getUniqueValuesByKey("state")
+    .filter((d) => d != "N/A")
+    .sort();
+
+  console.log("Here is the imported data:", loadedData.swiggyData);
+  console.log("Here are the unique cities:", globalApplicationState.cities);
+  console.log("Here are the unique cuisines:", globalApplicationState.cuisines);
+  console.log("Here are the unique states:", globalApplicationState.states);
+
+  const dataLoadedEvent = new Event("dataLoaded");
+  document.dispatchEvent(dataLoadedEvent);
+
+  /*
+  const worldMap = new MapVis(globalApplicationState);
+  const lineChart = new LineChart(globalApplicationState);
+
+  globalApplicationState.worldMap = worldMap;
+  globalApplicationState.lineChart = lineChart;
+  */
+});

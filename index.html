@@ -4,17 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Bites</title>
+    <!--
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Geologica:wght@700&display=swap');
       </style>
-    <link rel="stylesheet" href="css/landing.css">
-    <script src="js/landing.js"></script>
-    <script src="js/script.js"></script>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
+    -->
+
+    <link rel="stylesheet" href="./css/styles.css">
 </head>
+
 <body>
-    <h1>Data Bites.</h1>
-    <h3 class="catchphrase">Huge amounts of data, now bite sized.</h3>
+    <header>
+        <div class="logo">
+            <img src="pizza-logo.png" alt="Pizza Logo">
+        </div>
+        <div class="title">
+            <h1>Data Bites</h1>
+            <p class="catchy-phrase">Feast Your Eyes on Data</p>
+        </div>
+        <nav class="links">
+            <a href="./Project_Report__Visualization_For_Data_Science-3.pdf">Project Report</a>
+            <a href="https://github.com/dataviscourse2023/final-project-data-bites">GitHub</a>
+        </nav>
+    </header>
+    <div class="info">
+        <p>Data Bites is your portal to explore insights from the Swiggy dataset. Discover trends in food ordering and delivery, and savor the data-driven experience.</p>
+        <p>Dataset Source: Swiggy</p>
+    </div>
+    
+    <div class="container">
+        <div class="split-container">
+            <div class="left-pane">
+                <div class="time-greeting">
+                    <p id="greeting"></p>
+                </div>
+                <div class="catchy-phrases">
+                    <p id="phrases"></p>
+                </div>
+            </div>
+            <div class="right-pane">
+                <div class="split-container">
+                    <div class="left-section">
+                        <h2>Select a State</h2>
+                        <select id="stateDropdown" class="ios-dropdown"></select>
+                        <p>Selected State: <span id="selectedState">No state selected</span></p>
+                    </div>
+                    <div class="right-section">
+                        <h3>Top 10 Highest Rated Restaurants</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="barchartContainer">
+            <h3>Restaurants in each state of India</h3>
+            <div id="barchart">
+            </div>
+            <div class="cuisine-dropdown">
+                <h2>Select a Cuisine</h2>
+                <select id="cuisineDropdown" class="ios-dropdown"></select>
+                <p>Selected Cuisine: <span id="selectedCuisine">All</span></p>
+            </div>
+        </div>
+    </div>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/greeting.js"></script>
+    <script src="js/top10Restaurants.js"></script>
+    <script src="js/barChart.js"></script>
+</body>
+</html>
+
+<!--
+<body>
+    <header>
+        <h1>Data Bites</h1>
+    </header>
+     <h3 class="catchphrase">Huge amounts of data, now bite sized.</h3>
     <hr class="divider">
     <div class="centered-text" id="greeting">
         <p>Hello, </p>
@@ -32,6 +97,5 @@
         </div>
         Dark Mode
     </div>
+-->
 
-</body>
-</html>

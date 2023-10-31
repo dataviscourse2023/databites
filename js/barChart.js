@@ -1,0 +1,322 @@
+document.addEventListener("dataLoaded", function () {
+  console.log("Barchart loaded");
+
+  const cuisineDropdown = document.getElementById("cuisineDropdown");
+  const selectedCuisine = document.getElementById("selectedCuisine");
+
+  let option = document.createElement("option");
+  option.value = "None";
+  option.textContent = "None";
+  cuisineDropdown.appendChild(option);
+
+  option = document.createElement("option");
+  option.value = "All";
+  option.textContent = "All";
+  cuisineDropdown.appendChild(option);
+
+  for (const cuisine of globalApplicationState.cuisines) {
+    const option = document.createElement("option");
+    option.value = cuisine;
+    option.textContent = cuisine;
+    cuisineDropdown.appendChild(option);
+  }
+
+  if (cuisineDropdown.options.length > 0) {
+    selectedValue = cuisineDropdown.options[0].value;
+    selectedCuisine.textContent = selectedValue;
+  }
+
+  const countArray = GetRestaurantsCount();
+
+  console.log(countArray);
+
+  renderTotalBarChart(countArray);
+
+  cuisineDropdown.addEventListener("change", function () {
+    const selectedValue = cuisineDropdown.value;
+    selectedCuisine.textContent = selectedValue;
+
+    if (selectedValue === "All") renderStackedBarChart(countArray);
+    else if (selectedValue === "None") renderTotalBarChart(countArray);
+    else renderSelectedBarChart(countArray, selectedValue);
+  });
+});
+
+const GetRestaurantsCount = () => {
+  const countData = {};
+  const countArray = [];
+
+  globalApplicationState.swiggyData.forEach((restaurant) => {
+    const { cuisine, state } = restaurant;
+
+    if (!countData[state]) {
+      countData[state] = { cuisines: {}, totalCuisines: 0 };
+    }
+
+    if (!countData[state].cuisines[cuisine]) {
+      countData[state].cuisines[cuisine] = 0;
+    }
+
+    countData[state].cuisines[cuisine]++;
+    countData[state].totalCuisines++;
+  });
+
+  for (const state in countData) {
+    const cuisines = countData[state].cuisines;
+    const totalCuisines = countData[state].totalCuisines;
+
+    countArray.push({ state, cuisines, totalCuisines });
+  }
+
+  return countArray;
+};
+
+const renderStackedBarChart = (data) => {
+  data.map((item) => {
+    return {
+      state: item.state,
+      cuisines: Object.keys(item.cuisines).map((cuisine) => ({
+        name: cuisine,
+        count: item.cuisines[cuisine],
+      })),
+      totalCuisines: item.totalCuisines,
+    };
+  });
+
+  data.forEach((d) => {
+    let y0 = 0;
+    d.cuisines = d.cuisines.map((cuisine) => {
+      const y1 = y0 + cuisine.count;
+      return { name: cuisine.name, count: cuisine.count, y0, y1 };
+    });
+  });
+
+  console.log(data);
+
+  const svgWidth = 1200;
+  const svgHeight = 800;
+  const margin = { top: 20, right: 20, bottom: 150, left: 150 }; // Adjust the margin for labels
+  const width = svgWidth - margin.left - margin.right;
+  const height = svgHeight - margin.top - margin.bottom;
+
+  const svg = d3
+    .select("#barchart")
+    .append("svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight);
+
+  const g = svg
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const x = d3
+    .scaleBand()
+    .range([0, width])
+    .padding(0.1)
+    .domain(data.map((d) => d.state));
+
+  const y = d3
+    .scaleLinear()
+    .domain([0, d3.max(data, (d) => d3.max(d.cuisines, (c) => c.y1))])
+    .nice()
+    .range([height, 0]);
+
+  svg
+    .append("text")
+    .attr("class", "x-axis-label")
+    .attr("x", width / 2 + margin.left)
+    .attr("y", height + margin.top + 100)
+    .style("text-anchor", "middle")
+    .text("States");
+
+  svg
+    .append("text")
+    .attr("class", "y-axis-label")
+    .attr("transform", "rotate(-90)")
+    .attr("x", -(height / 2) - margin.top)
+    .attr("y", margin.left - 75)
+    .style("text-anchor", "middle")
+    .text("Number of Restaurants");
+
+  g.append("g")
+    .attr("class", "x-axis")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .attr("transform", "rotate(-45)");
+
+  g.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
+
+  svg.selectAll(".x-axis-label, .y-axis-label").attr("class", "axis-label");
+
+  const bars = g
+    .selectAll(".bar")
+    .data(data)
+    .enter()
+    .append("g")
+    .attr("class", "bar")
+    .attr("transform", (d) => `translate(${x(d.state)},0)`);
+
+  const colorScale = d3.scaleOrdinal().range(d3.schemeCategory10);
+
+  bars
+    .selectAll("rect")
+    .data((d) => d.cuisines)
+    .enter()
+    .append("rect")
+    .attr("x", (d) => x(d.name))
+    .attr("y", (d) => y(d.y1))
+    .attr("height", (d) => y(d.y0) - y(d.y1))
+    .attr("width", x.bandwidth())
+    .attr("fill", (d) => colorScale(d.name));
+};
+
+const renderTotalBarChart = (data) => {
+  const svgWidth = 1200;
+  const svgHeight = 800;
+  const margin = { top: 20, right: 20, bottom: 150, left: 150 }; // Adjust the margin for labels
+  const width = svgWidth - margin.left - margin.right;
+  const height = svgHeight - margin.top - margin.bottom;
+
+  const svg = d3
+    .select("#barchart")
+    .append("svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight);
+
+  const g = svg
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const x = d3
+    .scaleBand()
+    .range([0, width])
+    .padding(0.1)
+    .domain(data.map((d) => d.state));
+
+  const y = d3
+    .scaleLinear()
+    .range([height, 0])
+    .domain([0, d3.max(data, (d) => d.totalCuisines)]);
+
+  svg
+    .append("text")
+    .attr("class", "x-axis-label")
+    .attr("x", width / 2 + margin.left)
+    .attr("y", height + margin.top + 100)
+    .style("text-anchor", "middle")
+    .text("States");
+
+  svg
+    .append("text")
+    .attr("class", "y-axis-label")
+    .attr("transform", "rotate(-90)")
+    .attr("x", -(height / 2) - margin.top)
+    .attr("y", margin.left - 75)
+    .style("text-anchor", "middle")
+    .text("Number of Restaurants");
+
+  g.append("g")
+    .attr("class", "x-axis")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .attr("transform", "rotate(-45)");
+
+  g.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
+
+  svg.selectAll(".x-axis-label, .y-axis-label").attr("class", "axis-label");
+
+  g.selectAll(".bar")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("class", "bar")
+    .attr("x", (d) => x(d.state))
+    .attr("y", (d) => y(d.totalCuisines))
+    .attr("width", x.bandwidth())
+    .attr("height", (d) => height - y(d.totalCuisines));
+};
+
+const renderSelectedBarChart = (data, selectedCuisine) => {
+  data.map((d) => {
+    if (!(selectedCuisine in d.cuisines)) {
+      d.cuisines[selectedCuisine] = 0;
+    }
+    return d;
+  });
+
+  const svgWidth = 1200;
+  const svgHeight = 800;
+  const margin = { top: 20, right: 20, bottom: 150, left: 150 };
+  const width = svgWidth - margin.left - margin.right;
+  const height = svgHeight - margin.top - margin.bottom;
+
+  const svg = d3
+    .select("#barchart")
+    .append("svg")
+    .attr("width", svgWidth)
+    .attr("height", svgHeight);
+
+  const g = svg
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  const x = d3
+    .scaleBand()
+    .range([0, width])
+    .padding(0.1)
+    .domain(data.map((d) => d.state));
+
+  const y = d3
+    .scaleLinear()
+    .range([height, 0])
+    .domain([0, d3.max(data, (d) => d.cuisines[selectedCuisine])]);
+
+  svg
+    .append("text")
+    .attr("class", "x-axis-label")
+    .attr("x", width / 2 + margin.left)
+    .attr("y", height + margin.top + 100)
+    .style("text-anchor", "middle")
+    .text("States");
+
+  svg
+    .append("text")
+    .attr("class", "y-axis-label")
+    .attr("transform", "rotate(-90)")
+    .attr("x", -(height / 2) - margin.top)
+    .attr("y", margin.left - 75)
+    .style("text-anchor", "middle")
+    .text("Number of Restaurants");
+
+  g.append("g")
+    .attr("class", "x-axis")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .style("text-anchor", "end")
+    .attr("dx", "-.8em")
+    .attr("dy", ".15em")
+    .attr("transform", "rotate(-45)");
+
+  g.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
+
+  svg.selectAll(".x-axis-label, .y-axis-label").attr("class", "axis-label");
+
+  g.selectAll(".bar")
+    .data(data)
+    .enter()
+    .append("rect")
+    .attr("class", "bar")
+    .attr("x", (d) => x(d.state))
+    .attr("y", (d) => y(d.cuisines[selectedCuisine]))
+    .attr("width", x.bandwidth())
+    .attr("height", (d) => height - y(d.cuisines[selectedCuisine]));
+};
