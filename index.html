@@ -45,7 +45,7 @@
             <div class="right-pane">
                 <div class="split-container">
                     <div class="left-section">
-                        <h2>Select a State</h2>
+                        <h3>Select a State</h3>
                         <select id="stateDropdown" class="ios-dropdown"></select>
                         <p>Selected State: <span id="selectedState">No state selected</span></p>
                     </div>
@@ -70,12 +70,45 @@
             </div>
             </div>
         </div>
+
+        <div class="container">
+            <h2>Informations about restaurants in India</h2>
+                <div class="scatterPlotContainer">
+                <div class="left-section">
+                    <div class="top-section">
+                        <div class="box" id="box1">
+                            <div class="box-title">Avg. Food Rating</div>
+                            <div class="box-value">0</div>
+                        </div>
+                        <div class="box" id="box2">
+                            <div class="box-title">Avg. Food Price</div>
+                            <div class="box-value">₹0</div>
+                        </div>
+                        <div class="box" id="box3">
+                            <div class="box-title">Total Restaurants</div>
+                            <div class="box-value">0</div>
+                        </div>
+                    </div>
+                    <div class="bottom-section">
+                        <!-- Remove bottom dropdown and add India map-->
+                        <select id="indiaMapDropdown" class="ios-dropdown"></select>
+                    </div>
+                </div>
+                <div class="right-section">
+                    <div id="scatterPlot">
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        
     </div>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="js/script.js"></script>
     <script src="js/greeting.js"></script>
     <script src="js/top10Restaurants.js"></script>
     <script src="js/barChart.js"></script>
+    <script src="js/scatterPlot.js"></script>
 </body>
 </html>
 

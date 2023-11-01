@@ -155,13 +155,6 @@ header {
     padding: 20px;
 }
 
-
-.barchartContainer h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    text-align: center;
-}
-
 .axis-label {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     font-size: 16px;
@@ -194,7 +187,64 @@ header {
     font-weight: bold;
     color: #007AFF;
 }
+
+.scatterPlotContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* To place the left and right sections next to each other */
+    align-items: flex-start; /* Align sections at the top */
+}
+
+.scatterPlotContainer .left-section {
+    width: 40%; /* Adjust the width as needed */
+    padding: 10px;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* To space the boxes evenly */
+}
+
+.scatterPlotContainer .right-section {
+    width: 60%; /* Adjust the width as needed */
+    padding: 20px;
+}
+
+.top-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 100px;
+    background-color: #007AFF;
+    color: white;
+    font-weight: bold;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.box-title {
+    font-size: 16px;
+    text-align: center;
+}
+
+.box-value {
+    font-size: 32px;
+    margin-top: 5px;
+    font-weight: bold;
+    color: #93ee00;
+    text-align: center;
+}
+
+
   
-  
+    
   
   

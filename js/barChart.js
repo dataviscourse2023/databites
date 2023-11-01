@@ -3,7 +3,7 @@ const margin = { top: 20, right: 20, bottom: 150, left: 150 };
 
 let svg, g, x, y, width, height;
 
-const createChart = () => {
+const createBarChart = () => {
   svgWidth = window.innerWidth * 0.6;
   svgHeight = window.innerHeight * 0.6;
 
@@ -297,4 +297,4 @@ const renderStackedBarChart = (data) => {
     .text((d) => `Cuisine: ${d.name}\n Total Restaurants: ${d.count}`);
 };
 
-document.addEventListener("dataLoaded", createChart);
+document.addEventListener("dataLoaded", createBarChart);
