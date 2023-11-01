@@ -243,7 +243,10 @@ header {
     text-align: center;
 }
 
-
+.bottom-section p {
+    font-size: 18px;
+    margin-top: 20px;
+}
   
     
   

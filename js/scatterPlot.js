@@ -29,16 +29,9 @@ const SetupInfoData = (data) => {
   }
 };
 
-const createScatterPlot = () => {
-  testingData();
-  console.log("ScatterPlot loaded");
+let radiusScale, xScale, yScale, scatterPlotSvg;
 
-  const data = globalApplicationState.infos.sort(
-    (a, b) => b.restaurantCount - a.restaurantCount
-  );
-
-  SetupInfoData(data);
-
+const initializeScatterPlot = () => {
   const margin = { top: 20, right: 20, bottom: 70, left: 70 };
   const width = window.innerWidth * 0.4;
   const height = window.innerHeight * 0.4;
@@ -46,7 +39,42 @@ const createScatterPlot = () => {
   const xLabel = "Average Price";
   const yLabel = "Average Rating";
 
-  // Calculate the minimum and maximum values for average price and rating
+  if (!scatterPlotSvg)
+    scatterPlotSvg = d3
+      .select("#scatterPlot")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+
+  //const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+
+  scatterPlotSvg
+    .append("g")
+    .attr("class", "x-axis")
+    .attr("transform", `translate(0,${height})`)
+    .call(d3.axisBottom(xScale));
+
+  scatterPlotSvg
+    .append("text")
+    .attr("class", "x-label")
+    .attr("text-anchor", "middle")
+    .attr("x", width / 2)
+    .attr("y", height + 30)
+    .text(xLabel);
+
+  scatterPlotSvg.append("g").attr("class", "y-axis").call(d3.axisLeft(yScale));
+
+  scatterPlotSvg
+    .append("text")
+    .attr("class", "y-label")
+    .attr("text-anchor", "middle")
+    .attr("transform", `translate(-40, ${height / 2})rotate(-90)`)
+    .text(yLabel);
+};
+
+const initializeData = (data) => {
   const priceMin = d3.min(data, (d) => parseFloat(d.averagePrice));
   const priceMax = d3.max(data, (d) => parseFloat(d.averagePrice));
 
@@ -56,55 +84,42 @@ const createScatterPlot = () => {
   const restaurantCountMin = d3.min(data, (d) => parseFloat(d.restaurantCount));
   const restaurantCountMax = d3.max(data, (d) => parseFloat(d.restaurantCount));
 
-  const xScale = d3
+  xScale = d3
     .scaleLinear()
     .domain([priceMin - 10, priceMax + 10])
     .range([0, width]);
 
-  const yScale = d3
+  yScale = d3
     .scaleLinear()
     .domain([ratingMin - 0.1, ratingMax + 0.1])
     .range([height, 0]);
 
-  const radiusScale = d3
+  radiusScale = d3
     .scaleSqrt()
     .domain([restaurantCountMin, restaurantCountMax])
     .range([5, 20]);
 
-  const svg = d3
-    .select("#scatterPlot")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
+  initializeScatterPlot();
+};
 
-  //const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
+const createScatterPlot = () => {
+  console.log("ScatterPlot loaded");
+  testingData();
+};
 
-  svg
-    .append("g")
-    .attr("class", "x-axis")
-    .attr("transform", `translate(0,${height})`)
-    .call(d3.axisBottom(xScale));
+const renderScatterPlot = () => {
+  if (scatterPlotSvg) {
+    scatterPlotSvg.selectAll("*").remove();
+  }
 
-  svg
-    .append("text")
-    .attr("class", "x-label")
-    .attr("text-anchor", "middle")
-    .attr("x", width / 2)
-    .attr("y", height + 30)
-    .text(xLabel);
+  const data = globalApplicationState.infos.sort(
+    (a, b) => b.restaurantCount - a.restaurantCount
+  );
 
-  svg.append("g").attr("class", "y-axis").call(d3.axisLeft(yScale));
+  SetupInfoData(data);
+  initializeData(data);
 
-  svg
-    .append("text")
-    .attr("class", "y-label")
-    .attr("text-anchor", "middle")
-    .attr("transform", `translate(-40, ${height / 2})rotate(-90)`)
-    .text(yLabel);
-
-  svg
+  scatterPlotSvg
     .selectAll(".dot")
     .data(data)
     .enter()
@@ -129,19 +144,14 @@ const createScatterPlot = () => {
     );
 };
 
-const createSelectedStateScatterPlot = () => {
+const renderSelectedStatecScatterPlot = () => {
+  if (scatterPlotSvg) {
+    scatterPlotSvg.selectAll("*").remove();
+  }
+
   const selectedData = globalApplicationState.infos.find(
     (d) => d.state == selectedState
   );
-
-  SetupInfoData(selectedData);
-
-  const margin = { top: 20, right: 20, bottom: 70, left: 70 };
-  const width = window.innerWidth * 0.4;
-  const height = window.innerHeight * 0.4;
-
-  const xLabel = "Average Price";
-  const yLabel = "Average Rating";
 
   const data = selectedData.cuisineInfo;
   const scatterData = Object.keys(data).map((cuisine) => ({
@@ -150,65 +160,12 @@ const createSelectedStateScatterPlot = () => {
     averageRating: parseFloat(data[cuisine].averageRating),
     restaurantCount: parseFloat(data[cuisine].restaurantCount),
   }));
-
   scatterData.sort((a, b) => b.restaurantCount - a.restaurantCount);
 
-  const priceMin = d3.min(scatterData, (d) => d.averagePrice);
-  const priceMax = d3.max(scatterData, (d) => d.averagePrice);
+  SetupInfoData(selectedData);
+  initializeData(scatterData);
 
-  const ratingMin = d3.min(scatterData, (d) => d.averageRating);
-  const ratingMax = d3.max(scatterData, (d) => d.averageRating);
-
-  const restaurantCountMin = d3.min(scatterData, (d) => d.restaurantCount);
-  const restaurantCountMax = d3.max(scatterData, (d) => d.restaurantCount);
-
-  const xScale = d3
-    .scaleLinear()
-    .domain([priceMin - 10, priceMax + 10])
-    .range([0, width]);
-
-  const yScale = d3
-    .scaleLinear()
-    .domain([ratingMin - 0.1, ratingMax + 0.1])
-    .range([height, 0]);
-
-  const radiusScale = d3
-    .scaleSqrt()
-    .domain([restaurantCountMin, restaurantCountMax])
-    .range([5, 20]);
-
-  const svg = d3
-    .select("#scatterPlot")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform", `translate(${margin.left},${margin.top})`);
-
-  svg
-    .append("g")
-    .attr("class", "x-axis")
-    .attr("transform", `translate(0,${height})`)
-    .call(d3.axisBottom(xScale));
-
-  svg
-    .append("text")
-    .attr("class", "x-label")
-    .attr("text-anchor", "middle")
-    .attr("x", width / 2)
-    .attr("y", height + 30)
-    .text(xLabel);
-
-  svg.append("g").attr("class", "y-axis").call(d3.axisLeft(yScale));
-
-  svg
-    .append("text")
-    .attr("class", "y-label")
-    .attr("text-anchor", "middle")
-    .attr("transform", `translate(-40, ${height / 2})rotate(-90)`)
-    .text(yLabel);
-
-  svg
+  scatterPlotSvg
     .selectAll(".dot")
     .data(scatterData)
     .enter()
@@ -237,6 +194,9 @@ document.addEventListener("dataLoaded", createScatterPlot);
 
 const testingData = () => {
   const stateDropdown = document.getElementById("indiaMapDropdown");
+  const selectedStateUI = document
+    .querySelector(".bottom-section")
+    .querySelector("#selectedState");
 
   let option = document.createElement("option");
   option.value = "None";
@@ -250,12 +210,20 @@ const testingData = () => {
     stateDropdown.appendChild(option);
   }
 
+  if (stateDropdown.options.length > 0) {
+    selectedState = stateDropdown.options[0].value;
+    selectedStateUI.textContent = selectedState;
+  }
+
+  renderScatterPlot();
+
   stateDropdown.addEventListener("change", function () {
     selectedState = stateDropdown.value;
+    selectedStateUI.textContent = selectedState;
     if (selectedState == "None") {
-      createScatterPlot();
+      renderScatterPlot();
     } else {
-      createSelectedStateScatterPlot();
+      renderSelectedStatecScatterPlot();
     }
   });
 };
@@ -264,12 +232,12 @@ const testingData = () => {
 const RenderLegends = () => {
   const numStates = data.length;
 
-  const legendColumn1 = svg
+  const legendColumn1 = scatterPlotSvg
     .append("g")
     .attr("class", "legend-column")
     .attr("transform", `translate(${width - 150},${10})`);
 
-  const legendColumn2 = svg
+  const legendColumn2 = scatterPlotSvg
     .append("g")
     .attr("class", "legend-column")
     .attr("transform", `translate(${width - 70},${10})`); 
