@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Bites</title>
+    <link rel="icon" type="image/x-icon" href="./images/fullLogo.jpeg">
     <!--
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Geologica:wght@700&display=swap');
@@ -16,7 +18,7 @@
 <body>
     <header>
         <div class="logo">
-            <img src="pizza-logo.png" alt="Pizza Logo">
+            <img src="./images/logo.png" alt="Pizza Logo">
         </div>
         <div class="title">
             <h1>Data Bites</h1>
@@ -28,10 +30,11 @@
         </nav>
     </header>
     <div class="info">
-        <p>Data Bites is your portal to explore insights from the Swiggy dataset. Discover trends in food ordering and delivery, and savor the data-driven experience.</p>
+        <p>Data Bites is your portal to explore insights from the Swiggy dataset. Discover trends in food ordering and
+            delivery, and savor the data-driven experience.</p>
         <p>Dataset Source: Swiggy</p>
     </div>
-    
+
     <div class="container">
         <div class="split-container">
             <div class="left-pane">
@@ -57,23 +60,23 @@
         </div>
         <div class="container">
             <h2>Restaurants in each state of India</h3>
-            <div class="barchartContainer">
-            <div id="barchart">
-            </div>
-            <div class="cuisine-dropdown">
-                <h2>Select a Cuisine</h2>
-                <select id="cuisineDropdown" class="ios-dropdown"></select>
-                <p>Selected Cuisine: <span id="selectedCuisine">All</span></p>
-                <div class="legends">
-                    <h2>legends</h2>
+                <div class="barchartContainer">
+                    <div id="barchart">
+                    </div>
+                    <div class="cuisine-dropdown">
+                        <h2>Select a Cuisine</h2>
+                        <select id="cuisineDropdown" class="ios-dropdown"></select>
+                        <p>Selected Cuisine: <span id="selectedCuisine">All</span></p>
+                        <div class="legends">
+                            <h2>legends</h2>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            </div>
         </div>
 
         <div class="container">
             <h2>Informations about restaurants in India</h2>
-                <div class="scatterPlotContainer">
+            <div class="scatterPlotContainer">
                 <div class="left-section">
                     <div class="top-section">
                         <div class="box" id="box1">
@@ -101,8 +104,17 @@
                 </div>
             </div>
         </div>
+
+        <div class="container">
+            <h2>Cuisines vs States Matrix</h3>
+                <div class="matrixchartContainer">
+                    <div id="matrixchart">
+                    </div>
+                </div>
         </div>
-        
+
+    </div>
+
     </div>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="js/script.js"></script>
@@ -110,7 +122,9 @@
     <script src="js/top10Restaurants.js"></script>
     <script src="js/barChart.js"></script>
     <script src="js/scatterPlot.js"></script>
+    <script src="js/matrixChart.js"></script>
 </body>
+
 </html>
 
 <!--
@@ -137,4 +151,3 @@
         Dark Mode
     </div>
 -->
-

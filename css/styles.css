@@ -10,7 +10,6 @@ header {
     color: white;
     display: flex;
     align-items: center;
-    padding: 10px;
 }
 
 .catchy-phrase {
@@ -35,8 +34,8 @@ header {
 
 
 .logo img {
-    width: 40px; /* Adjust the size as needed */
-    height: 40px; /* Adjust the size as needed */
+    width: 100px; /* Adjust the size as needed */
+    height: 100px; /* Adjust the size as needed */
     margin-right: 10px;
 }
 
