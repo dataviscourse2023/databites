@@ -1,0 +1,252 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #000000;
+    color: white;
+    display: flex;
+    align-items: center;
+}
+
+.catchy-phrase {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0;
+}
+
+.info {
+    background-color: #fff;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.info p {
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+
+.logo img {
+    width: 100px; /* Adjust the size as needed */
+    height: 100px; /* Adjust the size as needed */
+    margin-right: 10px;
+}
+
+.title {
+    flex-grow: 1;
+}
+
+.title h1 {
+    margin: 0;
+}
+
+.links a {
+    color: white;
+    text-decoration: none;
+    margin-right: 20px;
+    transition: transform 0.2s, color 0.2s;
+}
+
+.links a:hover {
+    transform: scale(1);
+    color: #fcdb33;
+}
+
+.split-container {
+    display: flex;
+    margin-top: 20px;
+}
+
+.left-pane {
+    width: 25%;
+    background-color: #f0f0f0;
+    padding: 25px;
+    margin-left: 20px;
+    margin-right: 10px; 
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.time-greeting {
+    font-size: 18px;
+}
+
+.catchy-phrases {
+    font-size: 16px;
+    text-align: center;
+}
+
+.right-pane {
+    width: 68%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.right-pane .split-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.right-pane .left-section {
+    width: 30%; 
+    padding: 10px;
+}
+
+.right-pane .right-section {
+    width: 60%; 
+    padding: 20px;
+    border-left: 1px solid #ddd; 
+}
+
+.ios-dropdown {
+    appearance: none;
+    background-color: #f0f0f0;
+    border: none;
+    padding: 10px;
+    width: 75%;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    color: #333;
+    margin-top: 10px;
+}
+
+.right-pane p {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+#selectedState {
+    font-weight: bold;
+    color: #007AFF;
+}
+
+.container {
+    margin: 20px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.container h2{
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.barchartContainer {
+    display: flex;
+    flex-direction: row; 
+    margin: 50px;
+    padding: 20px;
+}
+
+.axis-label {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-size: 16px;
+    fill: #333;
+  }
+  
+.x-axis .tick text {
+    fill: #333;
+  }
+  
+.y-axis .tick text {
+    fill: #333;
+  }
+
+.cuisine-dropdown {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+    margin-top: 10px;
+}
+
+.cuisine-dropdown h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#selectedCuisine{
+    font-weight: bold;
+    color: #007AFF;
+}
+
+.scatterPlotContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; /* To place the left and right sections next to each other */
+    align-items: flex-start; /* Align sections at the top */
+}
+
+.scatterPlotContainer .left-section {
+    width: 40%; /* Adjust the width as needed */
+    padding: 10px;
+    border-right: 1px solid #ddd;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* To space the boxes evenly */
+}
+
+.scatterPlotContainer .right-section {
+    width: 60%; /* Adjust the width as needed */
+    padding: 20px;
+}
+
+.top-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 150px;
+    height: 100px;
+    background-color: #007AFF;
+    color: white;
+    font-weight: bold;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.box-title {
+    font-size: 16px;
+    text-align: center;
+}
+
+.box-value {
+    font-size: 32px;
+    margin-top: 5px;
+    font-weight: bold;
+    color: #93ee00;
+    text-align: center;
+}
+
+.bottom-section p {
+    font-size: 18px;
+    margin-top: 20px;
+}
+  
+    
+  
+  
