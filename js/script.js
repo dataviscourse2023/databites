@@ -117,3 +117,41 @@ loadData().then((loadedData) => {
   const dataLoadedEvent = new Event("dataLoaded");
   document.dispatchEvent(dataLoadedEvent);
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Your entire code here
+  const geoJsonPath = '../states_india.geojson';
+  const svg = d3.select('#indiaMap').append('svg')
+    .attr('width', '100%')
+    .attr('height', '100%');
+
+  // Load GeoJSON data and render the map
+  d3.json(geoJsonPath).then(function (data) {
+    const projection = d3.geoMercator()
+      .fitSize([svg.node().clientWidth, svg.node().clientHeight], data);
+
+    const path = d3.geoPath().projection(projection);
+
+    // svg.selectAll('path')
+    //   .data(data.features)
+    //   .enter().append('path')
+    //   .attr('d', path)
+    //   .on('click', function (event, d) {
+    //     const stateName = d.properties.st_nm || 'No state selected';
+    //     document.getElementById('selectedState').innerText = stateName;
+    //   });
+    console.log(data)
+    svg.selectAll('path')
+  .data(data.features)
+  .enter().append('path')
+  .attr('d', path)
+  .style('fill', 'lightblue')  // Add a fill color for visibility
+  .style('stroke', 'white')    // Add a stroke color
+  .on('click', function (event, d) {
+    const clickedFeature = typeof d === 'number' ? data.features[d] : d;
+    console.log('Clicked:', clickedFeature.properties.st_nm);
+    const stateName = clickedFeature.properties.st_nm || 'No state selected';
+    document.getElementById('selectedState').innerText = stateName;
+  });
+  });
+});
