@@ -1,3 +1,5 @@
+const barColor = "#007AFF";
+
 const createBarChart = () => {
   console.log("Barchart loaded");
 
@@ -9,10 +11,10 @@ const createBarChart = () => {
   option.textContent = "None";
   cuisineDropdown.appendChild(option);
 
-  option = document.createElement("option");
-  option.value = "All";
-  option.textContent = "All";
-  cuisineDropdown.appendChild(option);
+  // option = document.createElement("option");
+  // option.value = "All";
+  // option.textContent = "All";
+  // cuisineDropdown.appendChild(option);
 
   for (const cuisine of globalApplicationState.cuisines) {
     const option = document.createElement("option");
@@ -37,8 +39,8 @@ const createBarChart = () => {
     const selectedValue = cuisineDropdown.value;
     selectedCuisine.textContent = selectedValue;
 
-    if (selectedValue === "All") renderStackedBarChart(countArray);
-    else if (selectedValue === "None") renderTotalBarChart(countArray);
+    // if (selectedValue === "All") renderStackedBarChart(countArray);
+    if (selectedValue === "None") renderTotalBarChart(countArray);
     else renderSelectedBarChart(countArray, selectedValue);
   });
 };
@@ -129,8 +131,6 @@ const initializeBarChart = (data) => {
 const renderTotalBarChart = (data) => {
   d3.select(".legends").selectAll("*").remove();
 
-  const barColor = "#007AFF";
-
   y = d3
     .scaleLinear()
     .range([height, 0])
@@ -169,12 +169,7 @@ const renderSelectedBarChart = (data, selectedCuisine) => {
     return d;
   });
 
-  const colorScale = d3
-    .scaleOrdinal()
-    .domain(selectedCuisine)
-    .range(d3.schemeCategory10);
-
-  d3.select(".legends").selectAll("*").remove();
+  //d3.select(".legends").selectAll("*").remove();
 
   y = d3
     .scaleLinear()
@@ -195,7 +190,7 @@ const renderSelectedBarChart = (data, selectedCuisine) => {
     .attr("y", (d) => y(d.cuisines[selectedCuisine]))
     .attr("width", x.bandwidth())
     .attr("height", (d) => height - y(d.cuisines[selectedCuisine]))
-    .attr("fill", colorScale(selectedCuisine))
+    .attr("fill", barColor)
     .on("mouseover", function () {
       d3.select(this).attr("stroke", "#000").attr("stroke-width", 3);
     })

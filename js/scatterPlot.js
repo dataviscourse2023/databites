@@ -231,11 +231,11 @@ const selectedStateFromMap = (state) => {
   }
 };
 
-const testingData = () => {
-  selectedStateFromMap("None");
-};
+// MAP STATE SELECTION
+// const testingData = () => {
+//   selectedStateFromMap("None");
+// };
 
-/*
 // DROPDOWN STATE SELECTION
 
 const testingData = () => {
@@ -273,7 +273,7 @@ const testingData = () => {
     }
   });
 };
-*/
+
 
 /*
 const RenderLegends = () => {

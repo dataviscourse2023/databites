@@ -5,26 +5,16 @@ let top10RestaturantsData;
 
 document.addEventListener("dataLoaded", function () {
   console.log("top10restaurants  loaded");
-  const stateDropdown = document.getElementById("stateDropdown");
-  const selectedState = document.getElementById("selectedState");
-
-  for (const state of globalApplicationState.states) {
-    const option = document.createElement("option");
-    option.value = state;
-    option.textContent = state;
-    stateDropdown.appendChild(option);
-  }
+  const stateDropdown = document.getElementById("indiaMapDropdown");
 
   if (stateDropdown.options.length > 0) {
     selectedValue = stateDropdown.options[0].value;
-    selectedState.textContent = selectedValue;
   }
 
   renderTop10Restaurants(); // To render first time
 
   stateDropdown.addEventListener("change", function () {
     selectedValue = stateDropdown.value;
-    selectedState.textContent = selectedValue;
     renderTop10Restaurants();
   });
 });

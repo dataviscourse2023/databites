@@ -52,6 +52,13 @@ const createMatrixChart = () => {
   // Define color scale
   const colorScale = d3.scaleSequential(d3.interpolateBlues).domain([0, 5]); // Assuming ratings are on a scale of 0 to 5
 
+  // Create tooltip
+  const tooltip = d3
+    .select("body")
+    .append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
   // Create heatmap
   svg
     .selectAll("rect")
@@ -66,9 +73,44 @@ const createMatrixChart = () => {
     .attr("width", width / columns.length - 2)
     .attr("height", height / rows.length - 2)
     .style("fill", (d) => colorScale(d.value))
-    .style("stroke", "#fff")
-    .style("stroke-width", 1)
-    .style("cursor", "pointer");
+    .style("cursor", "pointer")
+    .on("mouseover", function () {
+      d3.select(this).attr("stroke", "black").attr("stroke-width", 3);
+    })
+    .on("mouseout", function () {
+      d3.select(this).attr("stroke", "black").attr("stroke-width", 0);
+    })
+    .append("title")
+    .text(
+      (d) =>
+        `cuisine: ${columns[d.column]}\nstate: ${rows[d.row]}\nAvg. Rating: ${
+          d.value
+        }\n`
+    );
+
+  // Add grid lines
+  const xGrid = svg.append("g").attr("class", "x-grid").style("stroke", "#ccc");
+  const yGrid = svg.append("g").attr("class", "y-grid").style("stroke", "#ccc");
+
+  xGrid
+    .selectAll("line")
+    .data(columns)
+    .enter()
+    .append("line")
+    .attr("x1", (d, i) => i * (width / columns.length))
+    .attr("y1", 0)
+    .attr("x2", (d, i) => i * (width / columns.length))
+    .attr("y2", height);
+
+  yGrid
+    .selectAll("line")
+    .data(rows)
+    .enter()
+    .append("line")
+    .attr("x1", 0)
+    .attr("y1", (d, i) => i * (height / rows.length))
+    .attr("x2", width)
+    .attr("y2", (d, i) => i * (height / rows.length));
 
   // Add row labels (states)
   svg

@@ -70,8 +70,4 @@ function animatePhrases() {
   animate(); // Start the animation
 }
 
-updateGreeting();
-animatePhrases();
-
-updateGreeting();
 animatePhrases();
