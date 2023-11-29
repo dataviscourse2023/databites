@@ -55,9 +55,9 @@
     </div>
     <div class="container">
         <h2>Informations about restaurants in India</h2>
-        <div class="scatterPlotContainer">
+        <div class="split-container">
             <div class="left-section">
-                <div class="top-section">
+                <div class="boxes">
                     <div class="box" id="box1">
                         <div class="box-title">Avg. Food Rating</div>
                         <div class="box-value">0</div>
@@ -71,15 +71,25 @@
                         <div class="box-value">0</div>
                     </div>
                 </div>
-                <div class="bottom-section">
+                <div class="map-section">
                     <!-- Remove dropdown and add India map-->
                     <select id="indiaMapDropdown" class="ios-dropdown"></select>
-                    <div id="indiaMap" style="width: 100%; height: 500px;"></div>
+                    <div id="indiaMap"></div>
                     <p>Selected State: <span id="selectedState">No state selected</span></p>
                 </div>
             </div>
             <div class="right-section">
-                <div id="scatterPlot">
+                <div class="top-section">
+                    <div id="scatterPlot">
+                    </div>
+                </div>
+                <div class="bottom-section">
+                    <div class="left-section" id="top10Restaurants">
+                        <p>Top 10 Restaurants</p>
+                    </div>
+                    <div class="right-section" id="piechart">
+                        <p>Pie chart of cuisines</p>
+                    </div>
                 </div>
             </div>
         </div>

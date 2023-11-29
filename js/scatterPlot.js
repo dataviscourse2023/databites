@@ -241,7 +241,7 @@ const selectedStateFromMap = (state) => {
 const testingData = () => {
   const stateDropdown = document.getElementById("indiaMapDropdown");
   const selectedStateUI = document
-    .querySelector(".bottom-section")
+    .querySelector(".map-section")
     .querySelector("#selectedState");
 
   let option = document.createElement("option");
@@ -273,7 +273,6 @@ const testingData = () => {
     }
   });
 };
-
 
 /*
 const RenderLegends = () => {
