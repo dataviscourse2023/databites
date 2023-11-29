@@ -1,12 +1,4 @@
-let svgWidth, svgHeight;
-const margin = { top: 20, right: 20, bottom: 150, left: 150 };
-
-let svg, g, x, y, width, height;
-
 const createBarChart = () => {
-  svgWidth = window.innerWidth * 0.6;
-  svgHeight = window.innerHeight * 0.6;
-
   console.log("Barchart loaded");
 
   const cuisineDropdown = document.getElementById("cuisineDropdown");
@@ -81,6 +73,10 @@ const GetRestaurantsCount = () => {
 };
 
 const initializeBarChart = (data) => {
+  const svgWidth = window.innerWidth * 0.6;
+  const svgHeight = window.innerHeight * 0.6;
+  const margin = { top: 20, right: 20, bottom: 150, left: 150 };
+
   svg = d3
     .select("#barchart")
     .append("svg")

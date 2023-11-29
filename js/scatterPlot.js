@@ -32,9 +32,9 @@ const SetupInfoData = (data) => {
 let radiusScale, xScale, yScale, scatterPlotSvg;
 
 const initializeScatterPlot = () => {
-  const margin = { top: 20, right: 20, bottom: 70, left: 70 };
   const width = window.innerWidth * 0.4;
   const height = window.innerHeight * 0.4;
+  const margin = { top: 20, right: 20, bottom: 70, left: 70 };
 
   const xLabel = "Average Price";
   const yLabel = "Average Rating";
@@ -50,11 +50,33 @@ const initializeScatterPlot = () => {
 
   //const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
-  scatterPlotSvg
+  const xAxis = scatterPlotSvg
     .append("g")
     .attr("class", "x-axis")
-    .attr("transform", `translate(0,${height})`)
-    .call(d3.axisBottom(xScale));
+    .attr("transform", `translate(0,${height})`);
+
+  // Manually add a tick at the value 0 with additional styling
+  const zeroTick = xAxis
+    .append("g")
+    .attr("class", "tick")
+    .attr("opacity", 1)
+    .attr("transform", "translate(0,0)");
+
+  zeroTick.append("line").attr("stroke", "currentColor").attr("y2", 6);
+
+  zeroTick
+    .append("text")
+    .attr("fill", "currentColor")
+    .attr("y", 9)
+    .attr("dy", "0.71em")
+    .style("font-size", "10px")
+    .style("font-family", "sans-serif")
+    .style("text-anchor", "middle")
+    .text("0");
+
+  xAxis.call((g) =>
+    g.append("g").attr("class", "tick").call(d3.axisBottom(xScale))
+  );
 
   scatterPlotSvg
     .append("text")
@@ -75,6 +97,8 @@ const initializeScatterPlot = () => {
 };
 
 const initializeData = (data) => {
+  const margin = { top: 20, right: 20, bottom: 70, left: 70 };
+
   const priceMin = d3.min(data, (d) => parseFloat(d.averagePrice));
   const priceMax = d3.max(data, (d) => parseFloat(d.averagePrice));
 
@@ -92,7 +116,7 @@ const initializeData = (data) => {
   yScale = d3
     .scaleLinear()
     .domain([ratingMin - 0.1, ratingMax + 0.1])
-    .range([height, 0]);
+    .range([height - margin.top - 3, 0]);
 
   radiusScale = d3
     .scaleSqrt()
@@ -192,6 +216,28 @@ const renderSelectedStatecScatterPlot = () => {
 
 document.addEventListener("dataLoaded", createScatterPlot);
 
+const selectedStateFromMap = (state) => {
+  selectedState = state;
+
+  const selectedStateUI = document
+    .querySelector(".bottom-section")
+    .querySelector("#selectedState");
+  selectedStateUI.textContent = selectedState;
+
+  if (selectedState == "None") {
+    renderScatterPlot();
+  } else {
+    renderSelectedStatecScatterPlot();
+  }
+};
+
+const testingData = () => {
+  selectedStateFromMap("None");
+};
+
+/*
+// DROPDOWN STATE SELECTION
+
 const testingData = () => {
   const stateDropdown = document.getElementById("indiaMapDropdown");
   const selectedStateUI = document
@@ -227,6 +273,7 @@ const testingData = () => {
     }
   });
 };
+*/
 
 /*
 const RenderLegends = () => {

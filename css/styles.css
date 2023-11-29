@@ -247,6 +247,18 @@ header {
     margin-top: 20px;
 }
   
-    
+ 
+#matrixchart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.matrixchartContainer {
+    margin: 20px;
+    padding: 20px;
+}
+ 
   
   
