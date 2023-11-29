@@ -1,45 +1,44 @@
-const loadMatrixChartData = () => {
-  const data = globalApplicationState.infos.sort((a, b) =>
-    a.state.localeCompare(b.state)
-  );
-
-  const cuisines = [
-    ...new Set(data.flatMap((item) => Object.keys(item.cuisineInfo))),
-  ].sort((a, b) => a.localeCompare(b));
-  console.log(cuisines);
-
-  const states = data.map((item) => item.state);
-  console.log(states);
-
-  const ratingsArray = Array.from({ length: states.length }, () =>
-    Array(cuisines.length).fill(0)
-  );
-
-  data.forEach((stateData, i) => {
-    const stateIndex = states.indexOf(stateData.state);
-    Object.entries(stateData.cuisineInfo).forEach(([cuisine, info]) => {
-      const cuisineIndex = cuisines.indexOf(cuisine);
-      ratingsArray[stateIndex][cuisineIndex] = parseFloat(info.averageRating);
-    });
-  });
-
-  console.log(ratingsArray);
-
-  const rows = globalApplicationState.states;
-  const columns = globalApplicationState.cuisines;
-
-  return { rows, columns, ratingsArray };
-};
-
 const createMatrixChart = () => {
   console.log("Matrix chart loaded");
-
-  const { rows, columns, ratingsArray } = loadMatrixChartData();
-
   // Set up the SVG container
   const width = 800;
   const height = 600;
   const margin = { top: 100, right: 300, bottom: 0, left: 150 }; // Increased margin
+
+  const loadMatrixChartData = () => {
+    const data = globalApplicationState.infos.sort((a, b) =>
+      a.state.localeCompare(b.state)
+    );
+
+    const cuisines = [
+      ...new Set(data.flatMap((item) => Object.keys(item.cuisineInfo))),
+    ].sort((a, b) => a.localeCompare(b));
+    console.log(cuisines);
+
+    const states = data.map((item) => item.state);
+    console.log(states);
+
+    const ratingsArray = Array.from({ length: states.length }, () =>
+      Array(cuisines.length).fill(0)
+    );
+
+    data.forEach((stateData, i) => {
+      const stateIndex = states.indexOf(stateData.state);
+      Object.entries(stateData.cuisineInfo).forEach(([cuisine, info]) => {
+        const cuisineIndex = cuisines.indexOf(cuisine);
+        ratingsArray[stateIndex][cuisineIndex] = parseFloat(info.averageRating);
+      });
+    });
+
+    console.log(ratingsArray);
+
+    const rows = globalApplicationState.states;
+    const columns = globalApplicationState.cuisines;
+
+    return { rows, columns, ratingsArray };
+  };
+
+  const { rows, columns, ratingsArray } = loadMatrixChartData();
 
   const svg = d3
     .select("#matrixchart")

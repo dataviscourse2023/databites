@@ -7,3 +7,5 @@ To do:
 - india map: heat map based on num of restaurant or resturant rating
 
 - Add animations
+
+- Add legend in scatterplot that size are based on count

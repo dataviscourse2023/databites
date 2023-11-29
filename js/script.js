@@ -10,6 +10,7 @@ const globalApplicationState = {
   selectedStates: [],
   infos: [],
   swiggyData: null,
+  selectedState: "",
 };
 
 function getUniqueValuesByKey(key) {
@@ -99,6 +100,37 @@ const getStateInfos = () => {
   return infos;
 };
 
+const setIndiaMapDropdown = () => {
+  const stateDropdown = document.getElementById("indiaMapDropdown");
+  const selectedStateUI = document
+    .querySelector(".map-section")
+    .querySelector("#selectedState");
+
+  let option = document.createElement("option");
+  option.value = "None";
+  option.textContent = "None";
+  stateDropdown.appendChild(option);
+
+  for (const state of globalApplicationState.states) {
+    option = document.createElement("option");
+    option.value = state;
+    option.textContent = state;
+    stateDropdown.appendChild(option);
+  }
+
+  if (stateDropdown.options.length > 0) {
+    globalApplicationState.selectedState = stateDropdown.options[0].value;
+    selectedStateUI.textContent = stateDropdown.options[0].value;
+  }
+
+  stateDropdown.addEventListener("change", function () {
+    globalApplicationState.selectedState = stateDropdown.value;
+    selectedStateUI.textContent = stateDropdown.value;
+    refreshScatterPlot();
+    refreshBubbleChart();
+  });
+};
+
 loadData().then((loadedData) => {
   globalApplicationState.swiggyData = loadedData.swiggyData;
   globalApplicationState.cities = getUniqueValuesByKey("city");
@@ -107,6 +139,8 @@ loadData().then((loadedData) => {
     .filter((d) => d != "N/A")
     .sort();
   globalApplicationState.infos = getStateInfos();
+
+  setIndiaMapDropdown();
 
   console.log("Here is the imported data:", loadedData.swiggyData);
   console.log("Here are the unique cities:", globalApplicationState.cities);
@@ -143,7 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
     //     const stateName = d.properties.st_nm || 'No state selected';
     //     document.getElementById('selectedState').innerText = stateName;
     //   });
-    console.log(data);
+
     svg
       .selectAll("path")
       .data(data.features)
