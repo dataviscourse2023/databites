@@ -1,11 +1,19 @@
 To do:
 
-- Top 10 rated restaurant in selected state (bubble chart size: rating and color based on cuisine)
-
-- pie chart
-
 - india map: heat map based on num of restaurant or resturant rating
 
-- Add animations
+- Add barchart animations
+
+- Add fade effect on matrix chart
+
+- Add scatterplot animation
 
 - Add legend in scatterplot that size are based on count
+
+- Add rating scale x / 5
+
+- Add price to be in rs
+
+- add css style to tooltip
+
+- change colors

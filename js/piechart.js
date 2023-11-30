@@ -69,7 +69,7 @@ const createPieChart = () => {
 
     const arc = svg.selectAll("arc").data(pieData).enter().append("g");
 
-    arc
+    const arcPath = arc
       .append("path")
       .attr("d", path)
       .attr("fill", (d) => color(d.data.cuisine))
@@ -78,9 +78,20 @@ const createPieChart = () => {
       })
       .on("mouseout", function (event, d) {
         d3.select(this).attr("stroke", "black").attr("stroke-width", 0);
-      })
-      .append("title")
-      .text((d) => `Restaurant Count: ${d.data.count}`);
+      });
+
+    arcPath
+      .transition()
+      .duration(1000)
+      .attrTween("d", function (d) {
+        const interpolate = d3.interpolate({ startAngle: 0, endAngle: 0 }, d);
+        return function (t) {
+          return path(interpolate(t));
+        };
+      });
+
+    // Add hover effect and title to each arc
+    arcPath.append("title").text((d) => `Restaurant Count: ${d.data.count}`);
 
     arc
       .append("text")
@@ -97,7 +108,12 @@ const createPieChart = () => {
       })
       .attr("dy", "0.35em")
       .style("text-anchor", (d) => (path.centroid(d)[0] < 0 ? "end" : "start"))
-      .text((d) => d.data.cuisine);
+      .text((d) => d.data.cuisine)
+      .style("opacity", 0) // Set initial opacity to 0
+      .transition()
+      .duration(1000)
+      .delay(500) // Delay the text animation for a smoother effect
+      .style("opacity", 1); // Fade in the text
   };
 
   return { renderPieChart };
