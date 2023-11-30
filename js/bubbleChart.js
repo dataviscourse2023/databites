@@ -84,8 +84,8 @@ const createBubbleChart = () => {
       ]);
 
     // Define chart dimensions
-    const width = 600;
-    const height = 400;
+    const width = 400;
+    const height = 450;
 
     // Create an SVG element
     const svg = bubbleChartContainer
@@ -107,7 +107,7 @@ const createBubbleChart = () => {
       .forceSimulation(top10Restaurants)
       .force(
         "center",
-        d3.forceCenter(width / 2 - 50, height / 2) // Center the simulation in the middle of the SVG
+        d3.forceCenter(width / 2, height / 2 + 50) // Center the simulation in the middle of the SVG
       )
       .force(
         "collision",
