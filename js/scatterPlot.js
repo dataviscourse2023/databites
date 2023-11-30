@@ -3,7 +3,7 @@ const createScatterPlot = () => {
 
   const width = window.innerWidth * 0.4;
   const height = window.innerHeight * 0.4;
-  const margin = { top: 20, right: 20, bottom: 70, left: 70 };
+  const margin = { top: 50, right: 20, bottom: 70, left: 70 };
   let scatterPlotSvg,
     priceMin,
     priceMax,
@@ -153,6 +153,39 @@ const createScatterPlot = () => {
         (d) =>
           `State: ${d.state}\nAvg. Price: ${d.averagePrice}\nAvg. Rating: ${d.averageRating}\nRestaurants: ${d.restaurantCount}`
       );
+
+    // Add legend
+    const legendGroup = scatterPlotSvg
+      .append("g")
+      .attr("class", "legend")
+      .attr("transform", `translate(${width - 250},${-25})`);
+
+    // Add box around legend
+    const legendBox = legendGroup
+      .append("rect")
+      .attr("width", 265)
+      .attr("height", 50)
+      .attr("fill", "white")
+      .attr("stroke", "black")
+      .attr("stroke-width", 1);
+
+    // Add circle to represent dot size
+    legendGroup
+      .append("circle")
+      .attr("r", radiusScale(restaurantCountMax / 3))
+      .attr("cx", 15)
+      .attr("cy", 25)
+      .attr("fill", "#007AFF")
+      .attr("stroke", "black")
+      .attr("stroke-width", 1);
+
+    // Add text label
+    legendGroup
+      .append("text")
+      .attr("x", 30)
+      .attr("y", 30)
+      .style("font-size", "12px")
+      .text(`Size is based on\nNumber of Restaurants`);
   };
 
   const renderSelectedStateScatterPlot = () => {

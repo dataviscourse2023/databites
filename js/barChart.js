@@ -85,7 +85,7 @@ const createBarChart = () => {
   };
 
   const renderTotalBarChart = (data) => {
-    d3.select(".legends").selectAll("*").remove();
+    // d3.select(".legends").selectAll("*").remove();
 
     y = d3
       .scaleLinear()
@@ -95,18 +95,26 @@ const createBarChart = () => {
     g.select(".y-axis").remove();
     g.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
 
-    g.selectAll(".bar").remove();
+    const bars = g.selectAll(".bar").data(data);
 
-    g.selectAll(".bar")
-      .data(data)
+    bars.exit().transition().duration(500).attr("height", 0).remove();
+
+    bars
       .enter()
       .append("rect")
       .attr("class", "bar")
       .attr("x", (d) => x(d.state))
-      .attr("y", (d) => y(d.totalCuisines))
       .attr("width", x.bandwidth())
-      .attr("height", (d) => height - y(d.totalCuisines))
       .attr("fill", barColor)
+      .merge(bars)
+      .transition()
+      .duration(500)
+      .attr("y", (d) => y(d.totalCuisines))
+      .attr("height", (d) => height - y(d.totalCuisines));
+
+    svg
+      .selectAll(".bar")
+      .style("cursor", "pointer")
       .on("mouseover", function () {
         d3.select(this).attr("stroke", "#000").attr("stroke-width", 3);
       })
@@ -135,25 +143,33 @@ const createBarChart = () => {
     g.select(".y-axis").remove();
     g.append("g").attr("class", "y-axis").call(d3.axisLeft(y));
 
-    g.selectAll(".bar").remove();
+    const bars = g.selectAll(".bar").data(data);
 
-    g.selectAll(".bar")
-      .data(data)
+    bars.exit().transition().duration(500).attr("height", 0).remove();
+
+    bars
       .enter()
       .append("rect")
       .attr("class", "bar")
       .attr("x", (d) => x(d.state))
-      .attr("y", (d) => y(d.cuisines[selectedCuisine]))
       .attr("width", x.bandwidth())
-      .attr("height", (d) => height - y(d.cuisines[selectedCuisine]))
       .attr("fill", barColor)
+      .merge(bars)
+      .transition()
+      .duration(500)
+      .attr("y", (d) => y(d.cuisines[selectedCuisine]))
+      .attr("height", (d) => height - y(d.cuisines[selectedCuisine]));
+
+    svg
+      .selectAll(".bar")
+      .style("cursor", "pointer")
       .on("mouseover", function () {
         d3.select(this).attr("stroke", "#000").attr("stroke-width", 3);
       })
       .on("mouseout", function () {
         d3.select(this).attr("stroke", "none");
       })
-      .append("title")
+      .select("title")
       .text(
         (d) =>
           `Cuisine: ${selectedCuisine}\n Total Restaurants: ${d.cuisines[selectedCuisine]}`
