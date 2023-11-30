@@ -33,36 +33,7 @@ const createBarChart = () => {
     selectedCuisine.textContent = selectedValue;
   }
 
-  const GetRestaurantsCount = () => {
-    const countData = {};
-    const countArray = [];
-
-    globalApplicationState.swiggyData.forEach((restaurant) => {
-      const { cuisine, state } = restaurant;
-
-      if (!countData[state]) {
-        countData[state] = { cuisines: {}, totalCuisines: 0 };
-      }
-
-      if (!countData[state].cuisines[cuisine]) {
-        countData[state].cuisines[cuisine] = 0;
-      }
-
-      countData[state].cuisines[cuisine]++;
-      countData[state].totalCuisines++;
-    });
-
-    for (const state in countData) {
-      const cuisines = countData[state].cuisines;
-      const totalCuisines = countData[state].totalCuisines;
-
-      countArray.push({ state, cuisines, totalCuisines });
-    }
-
-    return countArray;
-  };
-
-  const countArray = GetRestaurantsCount();
+  const countArray = globalApplicationState.cuisineRestaurantCount;
 
   console.log(countArray);
 

@@ -48,18 +48,26 @@ const createBubbleChart = () => {
   };
 
   const renderBubbleChart = (selectedState) => {
+    const bubbleChartContainer = d3.select("#bubbleChart");
+    // Clear previous chart content
+    bubbleChartContainer.selectAll("*").remove();
+
+    if (selectedState === "None") {
+      // If selectedState is "None", append a paragraph element with the specified text
+      bubbleChartContainer
+        .append("p")
+        .text("Select a state to view the top 10 restaurants")
+        .style("color", "red")
+        .style("font-weight", "bold");
+      return; // Exit the function
+    }
+
     const top10Restaurants = GetTop10Restaurants(selectedState);
     console.log(`Top 10 restaurants from ${selectedState}`);
     console.log(top10Restaurants);
 
     // Define a color scale for cuisines
     const cuisineColorScale = d3.scaleOrdinal(d3.schemeCategory10);
-
-    // Assuming you have a container element with the id 'bubbleChart'
-    const bubbleChartContainer = d3.select("#bubbleChart");
-
-    // Clear previous chart content
-    bubbleChartContainer.selectAll("*").remove();
 
     // Define chart dimensions
     const width = 600;

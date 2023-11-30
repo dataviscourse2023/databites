@@ -11,6 +11,7 @@ const globalApplicationState = {
   infos: [],
   swiggyData: null,
   selectedState: "",
+  cuisineRestaurantCount: [],
 };
 
 function getUniqueValuesByKey(key) {
@@ -128,7 +129,37 @@ const setIndiaMapDropdown = () => {
     selectedStateUI.textContent = stateDropdown.value;
     refreshScatterPlot();
     refreshBubbleChart();
+    refreshPieChart();
   });
+};
+
+const GetRestaurantsCount = () => {
+  const countData = {};
+  const countArray = [];
+
+  globalApplicationState.swiggyData.forEach((restaurant) => {
+    const { cuisine, state } = restaurant;
+
+    if (!countData[state]) {
+      countData[state] = { cuisines: {}, totalCuisines: 0 };
+    }
+
+    if (!countData[state].cuisines[cuisine]) {
+      countData[state].cuisines[cuisine] = 0;
+    }
+
+    countData[state].cuisines[cuisine]++;
+    countData[state].totalCuisines++;
+  });
+
+  for (const state in countData) {
+    const cuisines = countData[state].cuisines;
+    const totalCuisines = countData[state].totalCuisines;
+
+    countArray.push({ state, cuisines, totalCuisines });
+  }
+
+  return countArray;
 };
 
 loadData().then((loadedData) => {
@@ -139,6 +170,7 @@ loadData().then((loadedData) => {
     .filter((d) => d != "N/A")
     .sort();
   globalApplicationState.infos = getStateInfos();
+  globalApplicationState.cuisineRestaurantCount = GetRestaurantsCount();
 
   setIndiaMapDropdown();
 
