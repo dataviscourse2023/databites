@@ -1,7 +1,7 @@
 const createBarChart = () => {
   console.log("Barchart loaded");
 
-  const barColor = "#007AFF";
+  const barColor = "#C0392B";
   const svgWidth = window.innerWidth * 0.6;
   const svgHeight = window.innerHeight * 0.6;
   const margin = { top: 20, right: 20, bottom: 150, left: 150 };
@@ -106,6 +106,8 @@ const createBarChart = () => {
       .attr("x", (d) => x(d.state))
       .attr("width", x.bandwidth())
       .attr("fill", barColor)
+      .attr("stroke", "#36454F")
+      .attr("stroke-width", 2)
       .merge(bars)
       .transition()
       .duration(500)
@@ -119,7 +121,7 @@ const createBarChart = () => {
         d3.select(this).attr("stroke", "#000").attr("stroke-width", 3);
       })
       .on("mouseout", function () {
-        d3.select(this).attr("stroke", "none");
+        d3.select(this).attr("stroke", "#36454F").attr("stroke-width", 2);
       })
       .append("title")
       .text((d) => `Total Restaurants: ${d.totalCuisines}`);
@@ -154,6 +156,8 @@ const createBarChart = () => {
       .attr("x", (d) => x(d.state))
       .attr("width", x.bandwidth())
       .attr("fill", barColor)
+      .attr("stroke", "black")
+      .attr("stroke-width", 1)
       .merge(bars)
       .transition()
       .duration(500)
@@ -167,7 +171,7 @@ const createBarChart = () => {
         d3.select(this).attr("stroke", "#000").attr("stroke-width", 3);
       })
       .on("mouseout", function () {
-        d3.select(this).attr("stroke", "none");
+        d3.select(this).attr("stroke", "#000").attr("stroke-width", 1);
       })
       .select("title")
       .text(
@@ -176,6 +180,7 @@ const createBarChart = () => {
       );
   };
 
+  /*
   const renderStackedBarChart = (data) => {
     const stackdata = data.map((item) => {
       return {
@@ -259,7 +264,7 @@ const createBarChart = () => {
       .append("title")
       .text((d) => `Cuisine: ${d.name}\n Total Restaurants: ${d.count}`);
   };
-
+  */
   initializeBarChart(countArray);
   renderTotalBarChart(countArray);
 

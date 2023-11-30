@@ -131,7 +131,7 @@ const createScatterPlot = () => {
       .attr("r", 0) // Initial radius for entering elements
       .attr("cx", (d) => xScale(d.averagePrice))
       .attr("cy", (d) => yScale(d.averageRating))
-      .attr("fill", "#007AFF")
+      .attr("fill", "#D35400")
       .attr("stroke", "black")
       .attr("stroke-width", 1)
       .merge(scatterPlotSvg.selectAll(".dot")) // Merge enter and existing elements
@@ -146,7 +146,7 @@ const createScatterPlot = () => {
         d3.select(this).attr("stroke", "black").attr("stroke-width", 3);
       })
       .on("mouseout", function (d) {
-        d3.select(this).attr("stroke", "black").attr("stroke-width", 1);
+        d3.select(this).attr("stroke", "#36454F").attr("stroke-width", 1);
       })
       .append("title")
       .text(
@@ -175,8 +175,8 @@ const createScatterPlot = () => {
       .attr("r", radiusScale(restaurantCountMax / 3))
       .attr("cx", 15)
       .attr("cy", 25)
-      .attr("fill", "#007AFF")
-      .attr("stroke", "black")
+      .attr("fill", "#D35400")
+      .attr("stroke", "#36454F")
       .attr("stroke-width", 1);
 
     // Add text label
@@ -218,8 +218,8 @@ const createScatterPlot = () => {
       .attr("r", 0) // Initial radius for entering elements
       .attr("cx", (d) => xScale(d.averagePrice))
       .attr("cy", (d) => yScale(d.averageRating))
-      .attr("fill", "#007AFF")
-      .attr("stroke", "black")
+      .attr("fill", "#D35400")
+      .attr("stroke", "#36454F")
       .attr("stroke-width", 1)
       .merge(scatterPlotSvg.selectAll(".dot")) // Merge enter and existing elements
       .transition() // Add transition
@@ -233,13 +233,46 @@ const createScatterPlot = () => {
         d3.select(this).attr("stroke", "black").attr("stroke-width", 3);
       })
       .on("mouseout", function (d) {
-        d3.select(this).attr("stroke", "black").attr("stroke-width", 1);
+        d3.select(this).attr("stroke", "#36454F").attr("stroke-width", 1);
       })
       .append("title")
       .text(
         (d) =>
           `cuisine: ${d.cuisine}\nAvg. Price: ${d.averagePrice}\nAvg. Rating: ${d.averageRating}\nRestaurants: ${d.restaurantCount}`
       );
+
+    // Add legend
+    const legendGroup = scatterPlotSvg
+      .append("g")
+      .attr("class", "legend")
+      .attr("transform", `translate(${width - 250},${-25})`);
+
+    // Add box around legend
+    const legendBox = legendGroup
+      .append("rect")
+      .attr("width", 265)
+      .attr("height", 50)
+      .attr("fill", "white")
+      .attr("stroke", "black")
+      .attr("stroke-width", 1);
+
+    // Add circle to represent dot size
+    legendGroup
+      .append("circle")
+      .attr("r", radiusScale(restaurantCountMax / 3))
+      .attr("cx", 15)
+      .attr("cy", 25)
+      .attr("fill", "#D35400")
+      .attr("stroke", "36454F")
+      .attr("stroke-width", 1);
+
+    // Add text label
+    legendGroup
+      .append("text")
+      .attr("x", 30)
+      .attr("y", 30)
+      .style("font-size", "12px")
+      .text(`Size is based on\nNumber of Restaurants`);
   };
 
   return { renderScatterPlot, renderSelectedStateScatterPlot };

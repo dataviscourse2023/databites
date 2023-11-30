@@ -11,7 +11,7 @@ const createPieChart = () => {
       pieChartContainer
         .append("p")
         .text("No Data")
-        .style("color", "red")
+        .style("color", "#922B21")
         .style("font-weight", "bold");
       return; // Exit the function
     }
@@ -56,7 +56,21 @@ const createPieChart = () => {
       .append("g")
       .attr("transform", `translate(${width / 2},${height / 2})`);
 
-    const color = d3.scaleOrdinal(d3.schemeCategory10);
+    const color = d3
+      .scaleOrdinal()
+      .range([
+        "#922B21",
+        "#6E782E",
+        "#F9BF3B",
+        "#36454F",
+        "#93ee00",
+        "#D35400",
+        "#3498DB",
+        "#27AE60",
+        "#9B59B6",
+        "#F39C12",
+        "#C0392B",
+      ]);
 
     const pie = d3.pie().value((d) => d.count);
 

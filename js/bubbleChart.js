@@ -57,7 +57,7 @@ const createBubbleChart = () => {
       bubbleChartContainer
         .append("p")
         .text("No Data")
-        .style("color", "red")
+        .style("color", "#922B21")
         .style("font-weight", "bold");
       return; // Exit the function
     }
@@ -67,7 +67,21 @@ const createBubbleChart = () => {
     console.log(top10Restaurants);
 
     // Define a color scale for cuisines
-    const cuisineColorScale = d3.scaleOrdinal(d3.schemeCategory10);
+    const cuisineColorScale = d3
+      .scaleOrdinal()
+      .range([
+        "#922B21",
+        "#6E782E",
+        "#F9BF3B",
+        "#36454F",
+        "#93ee00",
+        "#D35400",
+        "#3498DB",
+        "#27AE60",
+        "#9B59B6",
+        "#F39C12",
+        "#C0392B",
+      ]);
 
     // Define chart dimensions
     const width = 600;

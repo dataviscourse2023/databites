@@ -49,14 +49,17 @@ const createMatrixChart = () => {
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
   // Define color scale
-  const colorScale = d3.scaleSequential(d3.interpolateBlues).domain([0, 5]); // Assuming ratings are on a scale of 0 to 5
+  const customColorInterpolator = d3.interpolateRgbBasis([
+    "#FDFDFD", // Lightest shade
+    "#D1EDB7", // Light shade
+    "#93ee00", // Medium shade
+    "#27AE60", // Dark shade
+    "#004d00", // Dark Green
+  ]);
 
-  // Create tooltip
-  const tooltip = d3
-    .select("body")
-    .append("div")
-    .attr("class", "tooltip")
-    .style("opacity", 0);
+  const colorScale = d3.scaleSequential(customColorInterpolator).domain([0, 5]);
+
+  // Assuming ratings are on a scale of 0 to 5
 
   // Create heatmap
   svg

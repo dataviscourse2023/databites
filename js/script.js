@@ -125,6 +125,14 @@ const setIndiaMapDropdown = () => {
   }
 
   stateDropdown.addEventListener("change", function () {
+    if (stateDropdown.value == "None") {
+      document.getElementById("infoTitle").textContent =
+        "Informations about restaurants in India";
+    } else {
+      document.getElementById(
+        "infoTitle"
+      ).textContent = `Informations about restaurants in ${stateDropdown.value}`;
+    }
     globalApplicationState.selectedState = stateDropdown.value;
     selectedStateUI.textContent = stateDropdown.value;
     refreshScatterPlot();
