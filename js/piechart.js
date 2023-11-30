@@ -10,7 +10,7 @@ const createPieChart = () => {
       // If selectedState is "None", append a paragraph element with the specified text
       pieChartContainer
         .append("p")
-        .text("Select a state to view its cuisines")
+        .text("No Data")
         .style("color", "red")
         .style("font-weight", "bold");
       return; // Exit the function

@@ -56,7 +56,7 @@ const createBubbleChart = () => {
       // If selectedState is "None", append a paragraph element with the specified text
       bubbleChartContainer
         .append("p")
-        .text("Select a state to view the top 10 restaurants")
+        .text("No Data")
         .style("color", "red")
         .style("font-weight", "bold");
       return; // Exit the function
