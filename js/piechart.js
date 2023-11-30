@@ -73,6 +73,7 @@ const createPieChart = () => {
       .append("path")
       .attr("d", path)
       .attr("fill", (d) => color(d.data.cuisine))
+      .style("cursor", "pointer")
       .on("mouseover", function (event, d) {
         d3.select(this).attr("stroke", "black").attr("stroke-width", 3);
       })
@@ -82,7 +83,7 @@ const createPieChart = () => {
 
     arcPath
       .transition()
-      .duration(1000)
+      .duration(500)
       .attrTween("d", function (d) {
         const interpolate = d3.interpolate({ startAngle: 0, endAngle: 0 }, d);
         return function (t) {
@@ -111,7 +112,7 @@ const createPieChart = () => {
       .text((d) => d.data.cuisine)
       .style("opacity", 0) // Set initial opacity to 0
       .transition()
-      .duration(1000)
+      .duration(500)
       .delay(500) // Delay the text animation for a smoother effect
       .style("opacity", 1); // Fade in the text
   };

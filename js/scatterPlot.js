@@ -34,12 +34,12 @@ const createScatterPlot = () => {
         0
       );
       const statesCount = globalApplicationState.states.length;
-      box1.textContent = `${(totalAvgRating / statesCount).toFixed(2)}`;
-      box2.textContent = `${(totalAvgPrice / statesCount).toFixed(2)}`;
+      box1.textContent = `${(totalAvgRating / statesCount).toFixed(2)} / 5.00`;
+      box2.textContent = `₹${(totalAvgPrice / statesCount).toFixed(2)}`;
       box3.textContent = `${totalRestaurantCount}`;
     } else {
-      box1.textContent = `${data.averageRating}`;
-      box2.textContent = `${data.averagePrice}`;
+      box1.textContent = `${data.averageRating} / 5.00`;
+      box2.textContent = `₹${data.averagePrice}`;
       box3.textContent = `${data.restaurantCount}`;
     }
   };
@@ -128,12 +128,20 @@ const createScatterPlot = () => {
       .enter()
       .append("circle")
       .attr("class", "dot")
-      .attr("r", (d) => radiusScale(parseFloat(d.restaurantCount)))
-      .attr("cx", (d) => xScale(parseFloat(d.averagePrice)))
-      .attr("cy", (d) => yScale(parseFloat(d.averageRating)))
+      .attr("r", 0) // Initial radius for entering elements
+      .attr("cx", (d) => xScale(d.averagePrice))
+      .attr("cy", (d) => yScale(d.averageRating))
       .attr("fill", "#007AFF")
       .attr("stroke", "black")
       .attr("stroke-width", 1)
+      .merge(scatterPlotSvg.selectAll(".dot")) // Merge enter and existing elements
+      .transition() // Add transition
+      .duration(1000) // Set the duration of the transition
+      .attr("r", (d) => radiusScale(d.restaurantCount));
+
+    scatterPlotSvg
+      .selectAll(".dot")
+      .style("cursor", "pointer")
       .on("mouseover", function (event, d) {
         d3.select(this).attr("stroke", "black").attr("stroke-width", 3);
       })
@@ -143,7 +151,7 @@ const createScatterPlot = () => {
       .append("title")
       .text(
         (d) =>
-          `State: ${d.state}\nTotal Restaurants: ${d.restaurantCount}\nAverageRating: ${d.averageRating}\nAveragePrice: ${d.averagePrice}`
+          `State: ${d.state}\nAvg. Price: ${d.averagePrice}\nAvg. Rating: ${d.averageRating}\nRestaurants: ${d.restaurantCount}`
       );
   };
 
@@ -174,12 +182,20 @@ const createScatterPlot = () => {
       .enter()
       .append("circle")
       .attr("class", "dot")
-      .attr("r", (d) => radiusScale(d.restaurantCount))
+      .attr("r", 0) // Initial radius for entering elements
       .attr("cx", (d) => xScale(d.averagePrice))
       .attr("cy", (d) => yScale(d.averageRating))
       .attr("fill", "#007AFF")
       .attr("stroke", "black")
       .attr("stroke-width", 1)
+      .merge(scatterPlotSvg.selectAll(".dot")) // Merge enter and existing elements
+      .transition() // Add transition
+      .duration(1000) // Set the duration of the transition
+      .attr("r", (d) => radiusScale(d.restaurantCount));
+
+    scatterPlotSvg
+      .selectAll(".dot")
+      .style("cursor", "pointer")
       .on("mouseover", function (event, d) {
         d3.select(this).attr("stroke", "black").attr("stroke-width", 3);
       })

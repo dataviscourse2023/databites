@@ -4,15 +4,9 @@ To do:
 
 - Add barchart animations
 
-- Add fade effect on matrix chart
-
-- Add scatterplot animation
+- Change cursor icon on hover
 
 - Add legend in scatterplot that size are based on count
-
-- Add rating scale x / 5
-
-- Add price to be in rs
 
 - add css style to tooltip
 

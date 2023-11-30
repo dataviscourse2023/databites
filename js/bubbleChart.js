@@ -109,6 +109,7 @@ const createBubbleChart = () => {
       .append("circle")
       .attr("r", (d) => radiusScale(d.rating))
       .attr("fill", (d) => cuisineColorScale(d.cuisine))
+      .style("cursor", "pointer")
       .on("mouseover", function (event, d) {
         d3.select(this).attr("stroke", "black").attr("stroke-width", 3);
       })
@@ -117,13 +118,14 @@ const createBubbleChart = () => {
       });
 
     // Adding ratings as labels
-    svg
+    const labels = svg
       .selectAll("text")
       .data(top10Restaurants)
       .enter()
       .append("text")
       .attr("text-anchor", "middle")
-      .text((d) => d.rating);
+      .text((d) => d.rating)
+      .style("opacity", 0); // Set initial opacity to 0
 
     svg
       .selectAll("circle")
@@ -132,6 +134,15 @@ const createBubbleChart = () => {
         (d) =>
           `Restaurant: ${d.restaurantName}\nRating: ${d.rating}\nCuisine: ${d.cuisine}`
       );
+
+    // Transition the circles to their new positions and sizes
+    bubbles
+      .transition()
+      .duration(500)
+      .attr("r", (d) => radiusScale(d.rating));
+
+    // Transition the labels to their new positions and fade them in
+    labels.transition().duration(500).style("opacity", 1);
 
     // Create legend
     const legend = svg
