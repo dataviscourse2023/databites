@@ -1,6 +1,6 @@
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #2e2e2e;
     margin: 0;
     padding: 0;
 }
@@ -16,20 +16,7 @@ header {
     font-size: 18px;
     font-weight: bold;
     margin: 5px 0;
-}
-
-.info {
-    background-color: #fff;
-    padding: 20px;
-    margin: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-
-.info p {
-    font-size: 16px;
-    margin: 10px 0;
+    color:#F9BF3B;
 }
 
 
@@ -59,21 +46,6 @@ header {
     color: #fcdb33;
 }
 
-.split-container {
-    display: flex;
-    margin-top: 20px;
-}
-
-.left-pane {
-    width: 25%;
-    background-color: #f0f0f0;
-    padding: 25px;
-    margin-left: 20px;
-    margin-right: 10px; 
-    text-align: center;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
 
 .time-greeting {
     font-size: 18px;
@@ -82,32 +54,7 @@ header {
 .catchy-phrases {
     font-size: 16px;
     text-align: center;
-}
-
-.right-pane {
-    width: 68%;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-}
-
-.right-pane .split-container {
-    display: flex;
-    flex-direction: row;
-}
-
-.right-pane .left-section {
-    width: 30%; 
-    padding: 10px;
-}
-
-.right-pane .right-section {
-    width: 60%; 
-    padding: 20px;
-    border-left: 1px solid #ddd; 
+    color: #922B21;
 }
 
 .ios-dropdown {
@@ -123,14 +70,9 @@ header {
     margin-top: 10px;
 }
 
-.right-pane p {
-    font-size: 18px;
-    margin-top: 20px;
-}
-
 #selectedState {
     font-weight: bold;
-    color: #007AFF;
+    color: #922B21;
 }
 
 .container {
@@ -184,17 +126,17 @@ header {
 
 #selectedCuisine{
     font-weight: bold;
-    color: #007AFF;
+    color: #922B21;
 }
 
-.scatterPlotContainer{
+.split-container{
     display: flex;
     flex-direction: row;
     justify-content: space-between; /* To place the left and right sections next to each other */
     align-items: flex-start; /* Align sections at the top */
 }
 
-.scatterPlotContainer .left-section {
+.split-container .left-section {
     width: 40%; /* Adjust the width as needed */
     padding: 10px;
     border-right: 1px solid #ddd;
@@ -203,12 +145,38 @@ header {
     justify-content: space-between; /* To space the boxes evenly */
 }
 
-.scatterPlotContainer .right-section {
-    width: 60%; /* Adjust the width as needed */
+.split-container .right-section {
+    width: 70%; /* Adjust the width as needed */
     padding: 20px;
 }
 
-.top-section {
+.bottom-section {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.bottom-section .left-section,
+.bottom-section .right-section {
+    flex: 1; /* Distribute space equally between left and right sections */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.bottom-section .left-section {
+    margin-right: 10px;
+}
+
+.bottom-section p {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+
+.boxes {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -221,7 +189,7 @@ header {
     justify-content: center;
     width: 150px;
     height: 100px;
-    background-color: #007AFF;
+    background-color: #36454F;
     color: white;
     font-weight: bold;
     margin: 10px;
@@ -235,10 +203,10 @@ header {
 }
 
 .box-value {
-    font-size: 32px;
+    font-size: 24px;
     margin-top: 5px;
     font-weight: bold;
-    color: #93ee00;
+    color: #F9BF3B;
     text-align: center;
 }
 
@@ -247,6 +215,54 @@ header {
     margin-top: 20px;
 }
   
-    
-  
-  
+ 
+#matrixchart-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.matrixchartContainer {
+    margin: 20px;
+    padding: 20px;
+}
+ 
+footer {
+    background-color: #000000;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    margin-top: 20px; /* Add some space between the content and footer */
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: #fcdb33;
+}
+
+.content {
+    text-align: justify;
+    padding: 0 300px; /* Adjust padding as needed */
+}
+
+.intro-text, .invitation-text {
+    margin-top: 30px;
+    line-height: 1.6;
+    color: #333; /* Adjust text color */
+}
+
+.invitation-text {
+    font-weight: bold;
+    color: #36454F;
+}
+
+#indiaMap{
+    width: 100%; 
+    height: 500px;
+    margin-top: 50px;
+}

@@ -29,127 +29,114 @@
             <a href="https://github.com/dataviscourse2023/final-project-data-bites">GitHub</a>
         </nav>
     </header>
-    <div class="info">
-        <p>Data Bites is your portal to explore insights from the Swiggy dataset. Discover trends in food ordering and
-            delivery, and savor the data-driven experience.</p>
-        <p>Dataset Source: Swiggy</p>
-    </div>
-
     <div class="container">
-        <div class="split-container">
-            <div class="left-pane">
-                <div class="time-greeting">
-                    <p id="greeting"></p>
-                </div>
-                <div class="catchy-phrases">
-                    <p id="phrases"></p>
-                </div>
-            </div>
-            <div class="right-pane">
-                <div class="split-container">
-                    <div class="left-section">
-                        <h3>Select a State</h3>
-                        <select id="stateDropdown" class="ios-dropdown"></select>
-                        <p>Selected State: <span id="selectedState">No state selected</span></p>
-                    </div>
-                    <div class="right-section">
-                        <h3>Top 10 Highest Rated Restaurants</h3>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <h2>Restaurants in each state of India</h3>
-                <div class="barchartContainer">
-                    <div id="barchart">
-                    </div>
-                    <div class="cuisine-dropdown">
-                        <h2>Select a Cuisine</h2>
-                        <select id="cuisineDropdown" class="ios-dropdown"></select>
-                        <p>Selected Cuisine: <span id="selectedCuisine">All</span></p>
-                        <div class="legends">
-                            <h2>legends</h2>
-                        </div>
-                    </div>
-                </div>
+        <h2>Welcome to Databites: Savoring India's Culinary Tapestry 🍜🌐</h2>
+        <div class="catchy-phrases">
+            <p id="phrases"></p>
         </div>
 
-        <div class="container">
-            <h2>Informations about restaurants in India</h2>
-            <div class="scatterPlotContainer">
-                <div class="left-section">
-                    <div class="top-section">
-                        <div class="box" id="box1">
-                            <div class="box-title">Avg. Food Rating</div>
-                            <div class="box-value">0</div>
-                        </div>
-                        <div class="box" id="box2">
-                            <div class="box-title">Avg. Food Price</div>
-                            <div class="box-value">₹0</div>
-                        </div>
-                        <div class="box" id="box3">
-                            <div class="box-title">Total Restaurants</div>
-                            <div class="box-value">0</div>
-                        </div>
+        <div class="content">
+            <p class="intro-text">Embark on a culinary odyssey with Databites – your gateway to the vibrant tapestry of
+                India's restaurant scene! 🇮🇳 Immerse yourself in the sizzling symphony of flavors that adorn the
+                gastronomic canvas of states. Each state, a culinary masterpiece, unveils a delectable palette of
+                unique cuisines. From the bustling street food of Delhi to the serene coastal treasures of Goa,
+                Databites promises an experience that transcends the ordinary menu.</p>
+
+            <p class="invitation-text">Join us at Databites, where every byte is a savory bite of
+                discovery! Let the diverse and delightful flavors of India unfold before your eyes. Our feast of
+                information invites you to explore, indulge, and relish the data-driven experience. Ready to savor the
+                data? 🍽️</p>
+        </div>
+
+
+        <!--div class="time-greeting">
+            <p id="greeting"></p>
+        </div-->
+    </div>
+    <div class="container">
+        <h2 id="infoTitle">Informations about restaurants in India</h2>
+        <div class="split-container">
+            <div class="left-section">
+                <div class="boxes">
+                    <div class="box" id="box1">
+                        <div class="box-title">Avg. Food Rating</div>
+                        <div class="box-value">0</div>
                     </div>
-                    <div class="bottom-section">
-                        <!-- Remove bottom dropdown and add India map-->
-                        <!-- <select id="indiaMapDropdown" class="ios-dropdown"></select>
-                        <p>Selected State: <span id="selectedState">No state selected</span></p> -->
-                        <div id="indiaMap" style="width: 100%; height: 500px;"></div>
-  <p>Selected State: <span id="selectedState">No state selected</span></p>
+                    <div class="box" id="box2">
+                        <div class="box-title">Avg. Food Price</div>
+                        <div class="box-value">₹0</div>
+                    </div>
+                    <div class="box" id="box3">
+                        <div class="box-title">Total Restaurants</div>
+                        <div class="box-value">0</div>
                     </div>
                 </div>
-                <div class="right-section">
+                <div class="map-section">
+                    <!-- Remove dropdown and add India map-->
+                    <select id="indiaMapDropdown" class="ios-dropdown"></select>
+                    <div id="indiaMap"></div>
+                    <p>Selected State: <span id="selectedState">No state selected</span></p>
+                </div>
+            </div>
+            <div class="right-section">
+                <div class="top-section" id="stateSelectedScatteredPlot">
                     <div id="scatterPlot">
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <div class="container">
-            <h2>Cuisines vs States Matrix</h3>
-                <div class="matrixchartContainer">
-                    <div id="matrixchart">
+                <div class="bottom-section">
+                    <div class="left-section">
+                        <div id="bubblechart-container">
+                            <p>Bubble chart of Top 10 Restaurants</p>
+                            <div id="bubbleChart"></div>
+                        </div>
+                    </div>
+                    <div class="right-section">
+                        <div id="piechart-container">
+                            <p>Piechart for cuisines</p>
+                            <div id="pieChart"></div>
+                        </div>
                     </div>
                 </div>
+            </div>
         </div>
-
     </div>
+    <div class="container">
+        <h2>Restaurants in each state of India</h3>
+            <div class="barchartContainer">
+                <div id="barchart">
+                </div>
+                <div class="cuisine-dropdown">
+                    <h2>Select a Cuisine</h2>
+                    <select id="cuisineDropdown" class="ios-dropdown"></select>
+                    <p>Selected Cuisine: <span id="selectedCuisine">All</span></p>
+                </div>
+            </div>
+    </div>
+    <div class="container">
+        <h2>Cuisines vs States Matrix</h2>
+        <div id="matrixchart-container" class="matrixchartContainer">
+            <div id="matrixchart"></div>
+        </div>
+    </div>
+    </div>
+
+    <footer>
+        <p>Created by
+            <a href="https://github.com/Sam-Blesswin">Sam Blesswin Stephen Rajan</a>
+            ,
+            <a href="https://github.com/aaditya2200">Aaditya Rangarajan</a>
+        </p>
+    </footer>
 
     </div>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="js/script.js"></script>
     <script src="js/greeting.js"></script>
-    <script src="js/top10Restaurants.js"></script>
-    <script src="js/barChart.js"></script>
     <script src="js/scatterPlot.js"></script>
+    <script src="js/bubbleChart.js"></script>
+    <script src="js/piechart.js"></script>
+    <script src="js/barChart.js"></script>
     <script src="js/matrixChart.js"></script>
 </body>
 
 </html>
-
-<!--
-<body>
-    <header>
-        <h1>Data Bites</h1>
-    </header>
-     <h3 class="catchphrase">Huge amounts of data, now bite sized.</h3>
-    <hr class="divider">
-    <div class="centered-text" id="greeting">
-        <p>Hello, </p>
-    </div>
-    <div class="time-div" id="time">
-
-    </div>
-    <div class="map-container">
-        <object type="image/svg+xml" data="images/india.svg" id="indiaMap" width="100%" height="100%"></object>
-    </div>
-
-    <div class="dark-mode-toggle" onclick="toggleDarkMode()">
-        <div class="toggle-container">
-            <div class="toggle-ball"></div>
-        </div>
-        Dark Mode
-    </div>
--->
