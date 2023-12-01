@@ -1,5 +1,5 @@
 const createHeatMap = () => {
-  const geoJsonPath = "../states_india.geojson";
+  const geoJsonPath = "../data/states_india.geojson";
   const svg = d3
     .select("#indiaMap")
     .append("svg")
