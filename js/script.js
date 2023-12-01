@@ -2,7 +2,6 @@ async function loadData() {
   const swiggyData = await d3.csv("./data/swiggy.csv");
   return { swiggyData };
 }
-const stateRestaurantCount = {};
 
 const globalApplicationState = {
   cities: [],
@@ -34,7 +33,7 @@ const getStateInfos = () => {
   let infos = [];
   const stateRatingSum = {};
   const statePriceSum = {};
-  // const stateRestaurantCount = {};
+  const stateRestaurantCount = {};
   const cuisineInfo = {};
 
   for (const item of globalApplicationState.swiggyData) {
@@ -213,53 +212,48 @@ loadData().then((loadedData) => {
 });
 
 document.addEventListener("DOMContentLoaded", function () {
-  // Your entire code here
   const geoJsonPath = "../states_india.geojson";
   const svg = d3
     .select("#indiaMap")
     .append("svg")
     .attr("width", "100%")
     .attr("height", "100%");
+
   // Load GeoJSON data and render the map
   d3.json(geoJsonPath).then(function (data) {
+    console.log(globalApplicationState.infos); // Move the console.log here
+
+    const colorScale = d3.scaleSequential(d3.interpolateReds)
+      .domain([0, d3.max(globalApplicationState.infos.map(info => info.restaurantCount))]);
+
     const projection = d3
       .geoMercator()
       .fitSize([svg.node().clientWidth, svg.node().clientHeight], data);
-    console.log(d3.max(globalApplicationState.infos.map(info => info.restaurantCount)))
     const path = d3.geoPath().projection(projection);
-    const colorScale = d3.scaleSequential(d3.interpolateReds)
-      .domain([0, d3.max(globalApplicationState.infos.map(info => info.restaurantCount))]);
 
     function getTotalRestaurantsForState(state) {
       const stateInfo = globalApplicationState.infos.find(info => info.state === state);
       if (stateInfo) {
-        console.log(globalApplicationState.infos);
-        console.log(globalApplicationState.infos.find(info => info.state === state))
-        var count = globalApplicationState.infos.find(info => info.state === state).restaurantCount;
-        console.log("Returning");
+        var count = stateInfo.restaurantCount;
         return count;
       }
       return 0;
     }
+
     svg
       .selectAll("path")
       .data(data.features)
       .enter()
       .append("path")
       .attr("d", path)
-      .style("fill", d => {
-        console.log("Computing colorscale for " + d.properties.st_nm);
-        const colorScaleVal = getTotalRestaurantsForState(d.properties.st_nm);
-        console.log("Colorscale for state: " + d.properties.st_nm + " is " + colorScaleVal);
-        colorScale(colorScale);
-      }) // Add a fill color for visibility
-      .style("stroke", "#fff") // Add a stroke color
+      .style("fill", d => colorScale(getTotalRestaurantsForState(d.properties.st_nm)))
+      .style("stroke", "#fff")
       .on("click", function (event, d) {
         const clickedFeature = typeof d === "number" ? data.features[d] : d;
         console.log("Clicked:", clickedFeature.properties.st_nm);
-        const stateName =
-          clickedFeature.properties.st_nm || "No state selected";
+        const stateName = clickedFeature.properties.st_nm || "No state selected";
         document.getElementById("selectedState").innerText = stateName;
       });
   });
 });
+
