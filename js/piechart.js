@@ -16,10 +16,10 @@ const createPieChart = () => {
       return; // Exit the function
     }
 
-    const cuisinesCountObject =
-      globalApplicationState.cuisineRestaurantCount.find(
-        (state) => state.state === selectedState
-      ).cuisines;
+    const selectedData = globalApplicationState.cuisineRestaurantCount.find(
+      (state) => state.state === selectedState
+    );
+    const cuisinesCountObject = selectedData.cuisines;
 
     // Convert cuisinesCountObject to an array of objects
     const cuisinesArray = Object.entries(cuisinesCountObject).map(
@@ -142,5 +142,8 @@ const refreshPieChart = () => {
 
 document.addEventListener("dataLoaded", () => {
   pieChart = createPieChart();
+  console.log(
+    "Pie chart, selected state: " + globalApplicationState.selectedState
+  );
   pieChart.renderPieChart(globalApplicationState.selectedState);
 });

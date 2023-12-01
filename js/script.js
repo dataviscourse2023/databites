@@ -101,8 +101,9 @@ const getStateInfos = () => {
   return infos;
 };
 
+/*
 const setIndiaMapDropdown = () => {
-  const stateDropdown = document.getElementById("indiaMapDropdown");
+  const statesFromIndiaMap = document.getElementById("indiaMapDropdown");
   const selectedStateUI = document
     .querySelector(".map-section")
     .querySelector("#selectedState");
@@ -110,36 +111,38 @@ const setIndiaMapDropdown = () => {
   let option = document.createElement("option");
   option.value = "None";
   option.textContent = "None";
-  stateDropdown.appendChild(option);
+  statesFromIndiaMap.appendChild(option);
 
   for (const state of globalApplicationState.states) {
     option = document.createElement("option");
     option.value = state;
     option.textContent = state;
-    stateDropdown.appendChild(option);
+    statesFromIndiaMap.appendChild(option);
   }
 
-  if (stateDropdown.options.length > 0) {
-    globalApplicationState.selectedState = stateDropdown.options[0].value;
-    selectedStateUI.textContent = stateDropdown.options[0].value;
+  if (statesFromIndiaMap.options.length > 0) {
+    globalApplicationState.selectedState = statesFromIndiaMap.options[0].value;
+    selectedStateUI.textContent = statesFromIndiaMap.options[0].value;
   }
 
-  stateDropdown.addEventListener("change", function () {
-    if (stateDropdown.value == "None") {
+  statesFromIndiaMap.addEventListener("change", function () {
+    console.log(statesFromIndiaMap.value);
+    if (statesFromIndiaMap.value == "None") {
       document.getElementById("infoTitle").textContent =
         "Informations about restaurants in India";
     } else {
       document.getElementById(
         "infoTitle"
-      ).textContent = `Informations about restaurants in ${stateDropdown.value}`;
+      ).textContent = `Informations about restaurants in ${statesFromIndiaMap.value}`;
     }
-    globalApplicationState.selectedState = stateDropdown.value;
-    selectedStateUI.textContent = stateDropdown.value;
+    globalApplicationState.selectedState = statesFromIndiaMap.value;
+    selectedStateUI.textContent = statesFromIndiaMap.value;
     refreshScatterPlot();
     refreshBubbleChart();
     refreshPieChart();
   });
 };
+*/
 
 const GetRestaurantsCount = () => {
   const countData = {};
@@ -180,8 +183,6 @@ loadData().then((loadedData) => {
   globalApplicationState.infos = getStateInfos();
   globalApplicationState.cuisineRestaurantCount = GetRestaurantsCount();
 
-  setIndiaMapDropdown();
-
   console.log("Here is the imported data:", loadedData.swiggyData);
   console.log("Here are the unique cities:", globalApplicationState.cities);
   console.log("Here are the unique cuisines:", globalApplicationState.cuisines);
@@ -190,48 +191,4 @@ loadData().then((loadedData) => {
 
   const dataLoadedEvent = new Event("dataLoaded");
   document.dispatchEvent(dataLoadedEvent);
-});
-
-document.addEventListener("DOMContentLoaded", function () {
-  // Your entire code here
-  const geoJsonPath = "../states_india.geojson";
-  const svg = d3
-    .select("#indiaMap")
-    .append("svg")
-    .attr("width", "100%")
-    .attr("height", "100%");
-
-  // Load GeoJSON data and render the map
-  d3.json(geoJsonPath).then(function (data) {
-    const projection = d3
-      .geoMercator()
-      .fitSize([svg.node().clientWidth, svg.node().clientHeight], data);
-
-    const path = d3.geoPath().projection(projection);
-
-    // svg.selectAll('path')
-    //   .data(data.features)
-    //   .enter().append('path')
-    //   .attr('d', path)
-    //   .on('click', function (event, d) {
-    //     const stateName = d.properties.st_nm || 'No state selected';
-    //     document.getElementById('selectedState').innerText = stateName;
-    //   });
-
-    svg
-      .selectAll("path")
-      .data(data.features)
-      .enter()
-      .append("path")
-      .attr("d", path)
-      .style("fill", "lightblue") // Add a fill color for visibility
-      .style("stroke", "white") // Add a stroke color
-      .on("click", function (event, d) {
-        const clickedFeature = typeof d === "number" ? data.features[d] : d;
-        console.log("Clicked:", clickedFeature.properties.st_nm);
-        const stateName =
-          clickedFeature.properties.st_nm || "No state selected";
-        document.getElementById("selectedState").innerText = stateName;
-      });
-  });
 });
