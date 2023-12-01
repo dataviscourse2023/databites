@@ -101,7 +101,9 @@ const createHeatMap = () => {
           refreshBubbleChart();
           refreshPieChart();
         }
-      });
+      })
+      .append("title")
+      .text((d) => `${d.properties.st_nm}`);
 
     // Legend
 
@@ -168,6 +170,16 @@ const createHeatMap = () => {
       .attr("text-anchor", "middle")
       .style("font-weight", "bold")
       .text("Restaurant Count");
+  });
+
+  document.getElementById("resetButton").addEventListener("click", function () {
+    document.getElementById("infoTitle").textContent =
+      "Informations about restaurants in India";
+    globalApplicationState.selectedState = "None";
+    selectedStateUI.textContent = "None";
+    refreshScatterPlot();
+    refreshBubbleChart();
+    refreshPieChart();
   });
 };
 

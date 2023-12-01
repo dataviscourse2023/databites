@@ -266,3 +266,21 @@ footer a:hover {
     height: 500px;
     margin-top: 50px;
 }
+
+#resetButton {
+    margin-left: 10px;
+    float: left; /* Float the button to the right */
+    background-color: #36454F; /* Green background */
+    color: white; /* White text */
+    padding: 10px 20px; /* Padding around the text */
+    font-size: 16px; /* Font size */
+    cursor: pointer; /* Cursor on hover */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+  }
+  
+  #resetButton:hover {
+    background-color: #000000; /* Darker green on hover */
+  }
+  
+  
