@@ -16,10 +16,10 @@ const createPieChart = () => {
       return; // Exit the function
     }
 
-    const cuisinesCountObject =
-      globalApplicationState.cuisineRestaurantCount.find(
-        (state) => state.state === selectedState
-      ).cuisines;
+    const selectedData = globalApplicationState.cuisineRestaurantCount.find(
+      (state) => state.state === selectedState
+    );
+    const cuisinesCountObject = selectedData.cuisines;
 
     // Convert cuisinesCountObject to an array of objects
     const cuisinesArray = Object.entries(cuisinesCountObject).map(
@@ -45,16 +45,16 @@ const createPieChart = () => {
 
     console.log(top10Cuisines);
 
-    const width = 400;
+    const width = 350;
     const height = 400;
-    const radius = 200;
+    const radius = width / 2;
 
     const svg = pieChartContainer
       .append("svg")
       .attr("width", width)
       .attr("height", height)
       .append("g")
-      .attr("transform", `translate(${width / 2},${height / 2})`);
+      .attr("transform", `translate(${width / 2 - 10},${height / 2})`);
 
     const color = d3
       .scaleOrdinal()
@@ -142,6 +142,8 @@ const refreshPieChart = () => {
 
 document.addEventListener("dataLoaded", () => {
   pieChart = createPieChart();
-  console.log("Pie chart, selected state: " + globalApplicationState.selectedState);
+  console.log(
+    "Pie chart, selected state: " + globalApplicationState.selectedState
+  );
   pieChart.renderPieChart(globalApplicationState.selectedState);
 });
