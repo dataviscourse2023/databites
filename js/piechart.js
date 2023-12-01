@@ -142,5 +142,6 @@ const refreshPieChart = () => {
 
 document.addEventListener("dataLoaded", () => {
   pieChart = createPieChart();
+  console.log("Pie chart, selected state: " + globalApplicationState.selectedState);
   pieChart.renderPieChart(globalApplicationState.selectedState);
 });
