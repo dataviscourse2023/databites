@@ -2,6 +2,7 @@ async function loadData() {
   const swiggyData = await d3.csv("./data/swiggy.csv");
   return { swiggyData };
 }
+const stateRestaurantCount = {};
 
 const globalApplicationState = {
   cities: [],
@@ -33,7 +34,7 @@ const getStateInfos = () => {
   let infos = [];
   const stateRatingSum = {};
   const statePriceSum = {};
-  const stateRestaurantCount = {};
+  // const stateRestaurantCount = {};
   const cuisineInfo = {};
 
   for (const item of globalApplicationState.swiggyData) {
@@ -102,7 +103,7 @@ const getStateInfos = () => {
 };
 
 const setIndiaMapDropdown = () => {
-  const stateDropdown = document.getElementById("indiaMapDropdown");
+  const statesFromIndiaMap = document.getElementById("indiaMapDropdown");
   const selectedStateUI = document
     .querySelector(".map-section")
     .querySelector("#selectedState");
@@ -110,33 +111,52 @@ const setIndiaMapDropdown = () => {
   let option = document.createElement("option");
   option.value = "None";
   option.textContent = "None";
-  stateDropdown.appendChild(option);
+  statesFromIndiaMap.appendChild(option);
 
   for (const state of globalApplicationState.states) {
     option = document.createElement("option");
     option.value = state;
     option.textContent = state;
-    stateDropdown.appendChild(option);
+    statesFromIndiaMap.appendChild(option);
   }
 
-  if (stateDropdown.options.length > 0) {
-    globalApplicationState.selectedState = stateDropdown.options[0].value;
-    selectedStateUI.textContent = stateDropdown.options[0].value;
+  if (statesFromIndiaMap.options.length > 0) {
+    globalApplicationState.selectedState = statesFromIndiaMap.options[0].value;
+    selectedStateUI.textContent = statesFromIndiaMap.options[0].value;
   }
 
-  stateDropdown.addEventListener("change", function () {
-    if (stateDropdown.value == "None") {
+  // const mapFeatures = d3.select("#indiaMap").selectAll(".map-feature");
+  // console.log(mapFeatures);
+  // mapFeatures.on("click", function(event, feature) {
+  //   if (statesFromIndiaMap.value == "None") {
+  //     document.getElementById("infoTitle").textContent =
+  //       "Informations about restaurants in India";
+  //   } else {
+  //     document.getElementById(
+  //       "infoTitle"
+  //     ).textContent = `Informations about restaurants in ${statesFromIndiaMap.value}`;
+  //   }
+  //   globalApplicationState.selectedState = statesFromIndiaMap.value;
+  //   selectedStateUI.textContent = statesFromIndiaMap.value;
+  //   refreshScatterPlot();
+  //   refreshBubbleChart();
+  //   console.log("Refreshing pie chart");
+  //   refreshPieChart();
+  // }); 
+  d3.select("#indiaMap").on("click", ".map-feature", function (event, feature) {
+    if (statesFromIndiaMap.value == "None") {
       document.getElementById("infoTitle").textContent =
         "Informations about restaurants in India";
     } else {
       document.getElementById(
         "infoTitle"
-      ).textContent = `Informations about restaurants in ${stateDropdown.value}`;
+      ).textContent = `Informations about restaurants in ${statesFromIndiaMap.value}`;
     }
-    globalApplicationState.selectedState = stateDropdown.value;
-    selectedStateUI.textContent = stateDropdown.value;
+    globalApplicationState.selectedState = statesFromIndiaMap.value;
+    selectedStateUI.textContent = statesFromIndiaMap.value;
     refreshScatterPlot();
     refreshBubbleChart();
+    console.log("Refreshing pie chart");
     refreshPieChart();
   });
 };
@@ -200,32 +220,40 @@ document.addEventListener("DOMContentLoaded", function () {
     .append("svg")
     .attr("width", "100%")
     .attr("height", "100%");
-
   // Load GeoJSON data and render the map
   d3.json(geoJsonPath).then(function (data) {
     const projection = d3
       .geoMercator()
       .fitSize([svg.node().clientWidth, svg.node().clientHeight], data);
-
+    console.log(d3.max(globalApplicationState.infos.map(info => info.restaurantCount)))
     const path = d3.geoPath().projection(projection);
+    const colorScale = d3.scaleSequential(d3.interpolateReds)
+      .domain([0, d3.max(globalApplicationState.infos.map(info => info.restaurantCount))]);
 
-    // svg.selectAll('path')
-    //   .data(data.features)
-    //   .enter().append('path')
-    //   .attr('d', path)
-    //   .on('click', function (event, d) {
-    //     const stateName = d.properties.st_nm || 'No state selected';
-    //     document.getElementById('selectedState').innerText = stateName;
-    //   });
-
+    function getTotalRestaurantsForState(state) {
+      const stateInfo = globalApplicationState.infos.find(info => info.state === state);
+      if (stateInfo) {
+        console.log(globalApplicationState.infos);
+        console.log(globalApplicationState.infos.find(info => info.state === state))
+        var count = globalApplicationState.infos.find(info => info.state === state).restaurantCount;
+        console.log("Returning");
+        return count;
+      }
+      return 0;
+    }
     svg
       .selectAll("path")
       .data(data.features)
       .enter()
       .append("path")
       .attr("d", path)
-      .style("fill", "lightblue") // Add a fill color for visibility
-      .style("stroke", "white") // Add a stroke color
+      .style("fill", d => {
+        console.log("Computing colorscale for " + d.properties.st_nm);
+        const colorScaleVal = getTotalRestaurantsForState(d.properties.st_nm);
+        console.log("Colorscale for state: " + d.properties.st_nm + " is " + colorScaleVal);
+        colorScale(colorScale);
+      }) // Add a fill color for visibility
+      .style("stroke", "#fff") // Add a stroke color
       .on("click", function (event, d) {
         const clickedFeature = typeof d === "number" ? data.features[d] : d;
         console.log("Clicked:", clickedFeature.properties.st_nm);
