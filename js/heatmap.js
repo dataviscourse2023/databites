@@ -134,7 +134,7 @@ const createHeatMap = () => {
     // Create a gradient for the legend
     const gradient = legend
       .append("linearGradient")
-      .attr("id", "legendGradient")
+      .attr("id", "legend_Gradient")
       .attr("x1", "0%")
       .attr("y1", "0%")
       .attr("x2", "100%")
@@ -152,7 +152,7 @@ const createHeatMap = () => {
       .append("rect")
       .attr("width", legendWidth)
       .attr("height", legendHeight)
-      .attr("fill", "url(#legendGradient)");
+      .attr("fill", "url(#legend_Gradient)");
 
     // Add legend axis
     legend
