@@ -123,25 +123,6 @@ const setIndiaMapDropdown = () => {
     globalApplicationState.selectedState = statesFromIndiaMap.options[0].value;
     selectedStateUI.textContent = statesFromIndiaMap.options[0].value;
   }
-
-  // const mapFeatures = d3.select("#indiaMap").selectAll(".map-feature");
-  // console.log(mapFeatures);
-  // mapFeatures.on("click", function(event, feature) {
-  //   if (statesFromIndiaMap.value == "None") {
-  //     document.getElementById("infoTitle").textContent =
-  //       "Informations about restaurants in India";
-  //   } else {
-  //     document.getElementById(
-  //       "infoTitle"
-  //     ).textContent = `Informations about restaurants in ${statesFromIndiaMap.value}`;
-  //   }
-  //   globalApplicationState.selectedState = statesFromIndiaMap.value;
-  //   selectedStateUI.textContent = statesFromIndiaMap.value;
-  //   refreshScatterPlot();
-  //   refreshBubbleChart();
-  //   console.log("Refreshing pie chart");
-  //   refreshPieChart();
-  // }); 
   d3.select("#indiaMap").on("click", ".map-feature", function (event, feature) {
     if (statesFromIndiaMap.value == "None") {
       document.getElementById("infoTitle").textContent =
@@ -246,6 +227,7 @@ document.addEventListener("DOMContentLoaded", function () {
       .enter()
       .append("path")
       .attr("d", path)
+      .attr("class", "map-feature")
       .style("fill", d => colorScale(getTotalRestaurantsForState(d.properties.st_nm)))
       .style("stroke", "#fff")
       .on("click", function (event, d) {
@@ -254,6 +236,28 @@ document.addEventListener("DOMContentLoaded", function () {
         const stateName = clickedFeature.properties.st_nm || "No state selected";
         document.getElementById("selectedState").innerText = stateName;
       });
+      const statesFromIndiaMap = document.getElementById("indiaMapDropdown");
+      const selectedStateUI = document
+      .querySelector(".map-section")
+      .querySelector("#selectedState");
+      var geojsonElements = d3.select("#indiaMap").selectAll("path");
+      geojsonElements.on("click", function (event, d) {
+        if (statesFromIndiaMap.value == "None") {
+          document.getElementById("infoTitle").textContent =
+            "Informations about restaurants in India";
+        } else {
+          document.getElementById(
+            "infoTitle"
+          ).textContent = `Informations about restaurants in ${statesFromIndiaMap.value}`;
+        }
+        globalApplicationState.selectedState = statesFromIndiaMap.value;
+        selectedStateUI.textContent = statesFromIndiaMap.value;
+        console.log("Calling this function");
+        refreshScatterPlot();
+        refreshBubbleChart();
+        console.log("Refreshing pie chart");
+        refreshPieChart();
+      })
   });
 });
 
