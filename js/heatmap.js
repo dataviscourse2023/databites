@@ -102,6 +102,72 @@ const createHeatMap = () => {
           refreshPieChart();
         }
       });
+
+    // Legend
+
+    const legendWidth = 200;
+    const legendHeight = 20;
+
+    const legendPadding = 25; // Padding between legend and map
+
+    const legend = svg
+      .append("g")
+      .attr(
+        "transform",
+        `translate(${
+          svg.node().clientWidth - legendWidth - legendPadding * 2
+        }, ${legendPadding})`
+      );
+
+    const legendScale = d3
+      .scaleLinear()
+      .domain([
+        0,
+        d3.max(
+          globalApplicationState.infos.map((info) => info.restaurantCount)
+        ),
+      ])
+      .range([0, legendWidth]);
+
+    // Create a gradient for the legend
+    const gradient = legend
+      .append("linearGradient")
+      .attr("id", "legendGradient")
+      .attr("x1", "0%")
+      .attr("y1", "0%")
+      .attr("x2", "100%")
+      .attr("y2", "0%");
+
+    gradient
+      .selectAll("stop")
+      .data(legendScale.ticks(6))
+      .enter()
+      .append("stop")
+      .attr("offset", (d) => legendScale(d) / legendWidth)
+      .attr("stop-color", colorScale);
+
+    legend
+      .append("rect")
+      .attr("width", legendWidth)
+      .attr("height", legendHeight)
+      .attr("fill", "url(#legendGradient)");
+
+    // Add legend axis
+    legend
+      .append("g")
+      .attr("transform", `translate(0, ${legendHeight})`)
+      .call(d3.axisBottom(legendScale).ticks(6))
+      .select(".domain")
+      .remove();
+
+    // Add "Ratings" text
+    legend
+      .append("text")
+      .attr("x", legendWidth / 2)
+      .attr("y", -10)
+      .attr("text-anchor", "middle")
+      .style("font-weight", "bold")
+      .text("Restaurant Count");
   });
 };
 
