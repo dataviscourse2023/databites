@@ -1,5 +1,7 @@
 # Data Bites
 ## This project is aimed to showcase the culinary diversity of India. India is a melting pot of cultures, and as such, there is bound to be a fiesta of flavours as well.
+## Live URL
+https://dataviscourse2023.github.io/databites/
 ## Local Setup
 There is no need to install anything in order to run this project. Just open this project in VS Code and fire up live server. Then, head to http://localhost:5500
 ## Libraries & Packages Used
